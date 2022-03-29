@@ -32,14 +32,15 @@ cppcheck0 <- function(path, Rcpp, include, std){
       paste0("--std=", std),
       "--suppress=ConfigurationNotChecked",
       "--suppress=missingIncludeSystem",
-      paste0("--cppcheck-build-dir=%s", TMPDIR)
+      sprintf("--cppcheck-build-dir=%s", TMPDIR)
     )
   if(Rcpp){
     Rcpp_include <- system.file("include", package = "Rcpp")
     args <- c(
       args,
-      paste0("-I", Rcpp_include),
-      sprintf("--suppress=*:*%s/*", Rcpp_include)
+      paste0("--include=", file.path(Rcpp_include, "Rcpp.h")),
+      # paste0("-I", Rcpp_include),
+      sprintf("--suppress=*:%s/*", Rcpp_include)
     )#, paste0("-i", Rcpp_include))
     if(dir.exists(path) && "RcppExports.cpp" %in% list.files(path)){
       exclude <- path.expand(file.path(path, "RcppExports.cpp"))
@@ -59,11 +60,12 @@ cppcheck0 <- function(path, Rcpp, include, std){
     stop(CPPCHECK)
   }
   XML <- read_xml(xmlFile)
+  print(as.character(XML))
   errors <- xml_child(XML, "errors")
   if(xml_length(errors) == 0L){
     xml_remove(xml_contents(errors))
   }
-  as_list(XML)
+  as.character(XML)
 }
 
 standards <- function(){
@@ -159,7 +161,7 @@ cppcheckR <- function(
 
   # forward options using x
   x = list(
-    cppcheck = cppcheckResults
+    xmlContent = URLencode(cppcheckResults)
   )
 
   # create widget

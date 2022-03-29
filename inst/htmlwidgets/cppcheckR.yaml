@@ -1,7 +1,5 @@
-# (uncomment to add a dependency)
-# dependencies:
-#  - name:
-#    version:
-#    src:
-#    script:
-#    stylesheet:
+dependencies:
+ - name: fast-xml-parser
+   version: 4.0.7
+   src: htmlwidgets/lib
+   script: fxp.min.js
