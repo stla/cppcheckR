@@ -14,6 +14,10 @@ HTMLWidgets.widget({
 
         var pre = document.createElement("PRE");
         pre.innerText = JSON.stringify(x.cppcheck, null, 4);
+        pre.style.color = "#E76900";
+        pre.style.backgroundColor = "#14128E";
+        pre.style.fontSize = "16px";
+        pre.style.fontWeight = "bold";
 
         // TODO: code to render the widget, e.g.
         el.appendChild(pre);

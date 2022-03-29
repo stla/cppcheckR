@@ -23,6 +23,7 @@ cppcheck0 <- function(path, Rcpp, include, std){
   if(Sys.which("cppcheck") == ""){
     stop("This package requires 'cppcheck' and it doesn't find it.")
   }
+  TMPDIR <- tempdir()
   args <-
     c(
       "--xml",
@@ -30,7 +31,8 @@ cppcheck0 <- function(path, Rcpp, include, std){
       "--enable=all",
       paste0("--std=", std),
       "--suppress=ConfigurationNotChecked",
-      "--suppress=missingIncludeSystem"
+      "--suppress=missingIncludeSystem",
+      paste0("--cppcheck-build-dir=%s", TMPDIR)
     )
   if(Rcpp){
     Rcpp_include <- system.file("include", package = "Rcpp")
@@ -184,6 +186,21 @@ cppcheck_addin_file <- function(){
     stop("You have to save your file.")
   }
   cppcheckR(path)
+}
+
+#' @importFrom rstudioapi hasFun getSourceEditorContext
+#' @noRd
+#' @keywords internal
+cppcheck_addin_folder <- function(){
+  if(!hasFun("getSourceEditorContext")){
+    stop("Your RStudio version is too old.", call. = FALSE)
+  }
+  context <- getSourceEditorContext()
+  path <- context[["path"]]
+  if(path == ""){
+    stop("You have to save your file.")
+  }
+  cppcheckR(dirname(path))
 }
 
 #' Shiny bindings for cppcheckR
