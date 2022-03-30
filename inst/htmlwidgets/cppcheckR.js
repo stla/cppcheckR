@@ -12,7 +12,7 @@ function jUnescape(obj) {
 function replacer(key, value) {
   if (key === "@_line" || key === "@_column") {
     return parseInt(value);
-  }else if(key === "@_file"){
+  } else if (key === "@_file") {
     return value.replace(/\\/g, "/");
   }
   return value;
@@ -33,7 +33,6 @@ HTMLWidgets.widget({
       falseColor: "#ff8080",
       nullColor: "cornflowerblue"
     };
-    const xpath = "//span[text()='\"@_cwe\":']";
 
     return {
       renderValue: function (x) {
@@ -57,12 +56,11 @@ HTMLWidgets.widget({
         pre.style.outline = "#051C55 solid 10px";
         pre.style.backgroundColor = "#051C55";
         pre.style.color = "#E76900";
-        pre.style.fontSize = "16px";
+        pre.style.fontSize = "15px";
         pre.style.fontWeight = "bold";
         el.style.overflowY = "auto";
         el.style.padding = "10px";
 
-        // TODO: code to render the widget, e.g.
         el.appendChild(pre);
 
         var locations = document.evaluate(
@@ -79,7 +77,7 @@ HTMLWidgets.widget({
         }
 
         var spans = document.evaluate(
-          xpath,
+          "//span[text()='\"@_cwe\":']",
           document,
           null,
           XPathResult.ORDERED_NODE_ITERATOR_TYPE,
