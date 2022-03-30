@@ -5,12 +5,15 @@ function jUnescape(obj) {
   });
   j = j.split('\\\\\\"').join('\\"');
   j = j.split("\\\\\\\\").join("\\\\");
+  console.log(j);
   return JSON.parse(j);
 }
 
 function replacer(key, value) {
   if (key === "@_line" || key === "@_column") {
     return parseInt(value);
+  }else if(key === "@_file"){
+    return value.replace(/\\/g, "/");
   }
   return value;
 }
@@ -37,21 +40,25 @@ HTMLWidgets.widget({
         var json = parser.parse(decodeURI(x.xmlContent));
         console.log(json);
         var errors = json.results.errors.error;
-        for (var i = 0; i < errors.length; i++) {
-          json.results.errors.error[i]["@_verbose"] = errors[i][
-            "@_verbose"
-          ].replace(/\\012/g, "\n");
+        if (errors) {
+          for (var i = 0; i < errors.length; i++) {
+            json.results.errors.error[i]["@_verbose"] = errors[i][
+              "@_verbose"
+            ].replace(/\\012/g, "\n");
+          }
         }
+        console.log(JSON.stringify(json, replacer, 2));
         var pre = document.createElement("PRE");
         pre.innerHTML = jsonFormatHighlight(
           jUnescape(JSON.stringify(json, replacer, 2)),
           customColorOptions
         );
         pre.style.whiteSpace = "pre-wrap";
-        el.style.color = "#E76900";
-        el.style.backgroundColor = "#051C55";
-        el.style.fontSize = "16px";
-        el.style.fontWeight = "bold";
+        pre.style.outline = "#051C55 solid 10px";
+        pre.style.backgroundColor = "#051C55";
+        pre.style.color = "#E76900";
+        pre.style.fontSize = "16px";
+        pre.style.fontWeight = "bold";
         el.style.overflowY = "auto";
         el.style.padding = "10px";
 
@@ -90,6 +97,7 @@ HTMLWidgets.widget({
           span.innerText = "";
           var a = document.createElement("A");
           a.style.color = "aquamarine";
+          a.style.textDecoration = "underline";
           a.setAttribute(
             "href",
             "https://cwe.mitre.org/data/definitions/" + code + ".html"
