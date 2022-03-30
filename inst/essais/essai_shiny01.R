@@ -3,6 +3,7 @@ library(shiny)
 library(shinyFiles)
 library(shinyAce)
 library(shinybusy)
+library(shinyWidgets)
 
 js <- '
 $(document).ready(function(){
@@ -66,7 +67,19 @@ ui <- fluidPage(
         br(),
         checkboxInput("checkconfig", "Check config"),
         br(),
-        actionButton("run", "Check", class = "btn-info btn-block")
+        h4("Define/undefine a symbol:"),
+        actionGroupButtons(
+          c("btndef", "btnundef"),
+          c("Define", "Undefine"),
+          status = c("info", "success"),
+          size = "normal",
+          direction = "horizontal",
+          fullwidth = TRUE
+        ),
+        br(),
+        wellPanel(
+          actionButton("run", "Check", class = "btn-danger btn-block")
+        )
       )
     ),
     mainPanel(
@@ -110,10 +123,51 @@ server <- function(input, output, session){
     }
   })
 
+  def <- reactiveVal(character(0L))
+  undef <- reactiveVal(character(0L))
+
+  observeEvent(input[["btndef"]], {
+    inputSweetAlert(
+      session = session,
+      "symboldef",
+      input = "text",
+      #title = "What's your name ?",
+      allowOutsideClick = FALSE,
+      showCloseButton = TRUE
+    )
+  })
+
+  observeEvent(input[["symboldef"]], {
+    def(c(def(), input[["symboldef"]]))
+  })
+
+  observeEvent(input[["btnundef"]], {
+    inputSweetAlert(
+      session = session,
+      "symbolundef",
+      input = "text",
+      #title = "What's your name ?",
+      allowOutsideClick = FALSE,
+      showCloseButton = TRUE
+    )
+  })
+
+  observeEvent(input[["symbolundef"]], {
+    undef(c(undef(), input[["symbolundef"]]))
+  })
+
+  observe({
+    print(def())
+    print(undef())
+  })
+
   output[["cppcheck"]] <- renderCppcheckR({
     req(input[["run"]])
     # show_spinner()
-    cppcheckR(filePath(), input[["std"]], checkConfig = input[["checkconfig"]])
+    cppcheckR(
+      filePath(), std = input[["std"]], def = def(), undef = undef(),
+      checkConfig = input[["checkconfig"]]
+    )
   })
 }
 
