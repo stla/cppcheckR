@@ -4,7 +4,14 @@
 \alias{cppcheckR}
 \title{<Add Title>}
 \usage{
-cppcheckR(path, std = NULL, width = NULL, height = NULL, elementId = NULL)
+cppcheckR(
+  path,
+  std = NULL,
+  checkConfig = FALSE,
+  width = NULL,
+  height = NULL,
+  elementId = NULL
+)
 }
 \description{
 <Add Description>

@@ -38,13 +38,14 @@ getRcppDeps <- function(path){
 
 #' @importFrom xml2 read_xml as_list xml_child xml_length xml_remove xml_contents
 #' @noRd
-cppcheck <- function(path, Rcpp, RcppDeps, include, std){
+cppcheck <- function(path, Rcpp, RcppDeps, include, std, checkConfig){
   if(Sys.which("cppcheck") == ""){
     stop("This package requires 'cppcheck' and it doesn't find it.")
   }
   TMPDIR <- tempdir()
   args <-
-    c(
+    c("-UCDT_USE_AS_COMPILED_LIBRARY",
+      "-IC:/PortableApps/R/R-4.1.2/App/R-Portable/library/RcppArmadillo/include",
       "--xml",
       "--force",
       "--enable=all",
@@ -54,12 +55,15 @@ cppcheck <- function(path, Rcpp, RcppDeps, include, std){
       "--suppress=missingIncludeSystem",
       sprintf("--cppcheck-build-dir=%s", TMPDIR)
     )
+  if(checkConfig){
+    args <- c(args, "--check-config")
+  }
   if(Rcpp){
     Rcpp_include <- system.file("include", package = "Rcpp")
     args <- c(
       args,
-      paste0("--include=", file.path(Rcpp_include, "Rcpp.h")),
-      # paste0("-I", Rcpp_include),
+      # paste0("--include=", file.path(Rcpp_include, "Rcpp.h")),
+      paste0("-I", Rcpp_include),
       sprintf("--suppress=*:%s/*", Rcpp_include)
     )#, paste0("-i", Rcpp_include))
     if(dir.exists(path) && "RcppExports.cpp" %in% list.files(path)){
@@ -74,7 +78,8 @@ cppcheck <- function(path, Rcpp, RcppDeps, include, std){
       }
       args <- c(
         args,
-        paste0("--include=", hfile),
+        # paste0("--include=", hfile),
+        paste0("-I", dep_include),
         sprintf("--suppress=*:%s/*", dep_include)
       )
     }
@@ -214,7 +219,8 @@ getOptions <- function(path){
 #'
 #' @export
 cppcheckR <- function(
-  path, std = NULL, width = NULL, height = NULL, elementId = NULL
+  path, std = NULL, checkConfig = FALSE,
+  width = NULL, height = NULL, elementId = NULL
 ){
 
   if(!is.null(std)){
@@ -227,7 +233,7 @@ cppcheckR <- function(
   print(opts)
   cppcheckResults <- cppcheck(
     path = path, Rcpp = opts[["Rcpp"]], RcppDeps = opts[["RcppDeps"]],
-    include = opts[["include"]], std = std
+    include = opts[["include"]], std = std, checkConfig = checkConfig
   )
 
   # forward options using x

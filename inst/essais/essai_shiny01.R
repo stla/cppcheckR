@@ -12,12 +12,14 @@ $(document).ready(function(){
     if(notstart){
       $(".shinybusy").addClass("shinybusy-busy");
       $(".shinybusy").removeClass("shinybusy-ready");
+      $("#file").prop("disabled", true);
       $("#run").prop("disabled", true).text("Running...");
     }
   }).on("shiny:recalculated", function(){
     if(notstart){
       $(".shinybusy").removeClass("shinybusy-busy");
       $(".shinybusy").addClass("shinybusy-ready");
+      $("#file").prop("disabled", false);
       $("#run").prop("disabled", false).text("Check");
     }
     notstart = true;
@@ -61,6 +63,8 @@ ui <- fluidPage(
           choices =
             c("c89", "c99", "c11", "c++03", "c++11", "c++14", "c++17", "c++20")
         ),
+        br(),
+        checkboxInput("checkconfig", "Check config"),
         br(),
         actionButton("run", "Check", class = "btn-info btn-block")
       )
@@ -109,7 +113,7 @@ server <- function(input, output, session){
   output[["cppcheck"]] <- renderCppcheckR({
     req(input[["run"]])
     # show_spinner()
-    cppcheckR(filePath(), input[["std"]])
+    cppcheckR(filePath(), input[["std"]], checkConfig = input[["checkconfig"]])
   })
 }
 
