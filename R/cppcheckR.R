@@ -38,14 +38,15 @@ getRcppDeps <- function(path){
 
 #' @importFrom xml2 read_xml as_list xml_child xml_length xml_remove xml_contents
 #' @noRd
-cppcheck <- function(path, Rcpp, RcppDeps, include, std, checkConfig){
+cppcheck <- function(
+  path, Rcpp, RcppDeps, include, std, def, undef, checkConfig
+){
   if(Sys.which("cppcheck") == ""){
     stop("This package requires 'cppcheck' and it doesn't find it.")
   }
   TMPDIR <- tempdir()
   args <-
-    c("-UCDT_USE_AS_COMPILED_LIBRARY",
-      "-IC:/PortableApps/R/R-4.1.2/App/R-Portable/library/RcppArmadillo/include",
+    c(
       "--xml",
       "--force",
       "--enable=all",
@@ -55,6 +56,12 @@ cppcheck <- function(path, Rcpp, RcppDeps, include, std, checkConfig){
       "--suppress=missingIncludeSystem",
       sprintf("--cppcheck-build-dir=%s", TMPDIR)
     )
+  for(d in def){
+    args <- c(args, paste0("-D", d))
+  }
+  for(u in undef){
+    args <- c(args, paste0("-U", u))
+  }
   if(checkConfig){
     args <- c(args, "--check-config")
   }
@@ -119,7 +126,7 @@ standards <- function(){
   )
 }
 
-cppcheck_prompt <- function(){
+cppcheck_prompt_std <- function(){
   stds <- standards()
   cat("Set the standard:\n")
   choices <- paste0(seq_along(stds), ". ", stds)
@@ -134,6 +141,32 @@ cppcheck_prompt <- function(){
     )
   }
   stds[i]
+}
+
+cppcheck_prompt_def <- function(){
+  def <- character(0L)
+  symbol <- "x"
+  while(symbol != ""){
+    cat("Enter a symbol you want to define:\n")
+    symbol <- readline("Leave blank to exit. ")
+    if(symbol != ""){
+      def <- c(def, symbol)
+    }
+  }
+  def
+}
+
+cppcheck_prompt_undef <- function(){
+  undef <- character(0L)
+  symbol <- "x"
+  while(symbol != ""){
+    cat("Enter a symbol you want to undefine:\n")
+    symbol <- readline("Leave blank to exit. ")
+    if(symbol != ""){
+      undef <- c(undef, symbol)
+    }
+  }
+  undef
 }
 
 #' @importFrom pkgload pkg_path
@@ -154,6 +187,7 @@ getOptions <- function(path){
   }
   pPath <- pkgPath(path)
   RcppDeps <- character(0L)
+  include <- NULL
   if(!is.null(pPath)){
     desc <- pkg_desc(pPath)
     Rcpp <- desc$has_dep("Rcpp", "LinkingTo")
@@ -219,21 +253,28 @@ getOptions <- function(path){
 #'
 #' @export
 cppcheckR <- function(
-  path, std = NULL, checkConfig = FALSE,
+  path, std = NULL, def = NULL, undef = NULL, checkConfig = FALSE,
   width = NULL, height = NULL, elementId = NULL
 ){
 
   if(!is.null(std)){
     std <- match.arg(std, standards())
   }else{
-    std <- cppcheck_prompt()
+    std <- cppcheck_prompt_std()
+  }
+  if(is.null(def)){
+    def <- cppcheck_prompt_def()
+  }
+  if(is.null(undef)){
+    undef <- cppcheck_prompt_undef()
   }
   opts <- getOptions(path)
   cat("opts:\n")
   print(opts)
   cppcheckResults <- cppcheck(
     path = path, Rcpp = opts[["Rcpp"]], RcppDeps = opts[["RcppDeps"]],
-    include = opts[["include"]], std = std, checkConfig = checkConfig
+    include = opts[["include"]], std = std, def = def, undef = undef,
+    checkConfig = checkConfig
   )
 
   # forward options using x
