@@ -58,6 +58,19 @@ HTMLWidgets.widget({
         // TODO: code to render the widget, e.g.
         el.appendChild(pre);
 
+        var locations = document.evaluate(
+          "//span[text()='\"location\":']",
+          document,
+          null,
+          XPathResult.ORDERED_NODE_ITERATOR_TYPE,
+          null
+        );
+        var location = locations.iterateNext();
+        while (location) {
+          location.style.borderTop = "2px solid";
+          location = locations.iterateNext();
+        }
+
         var spans = document.evaluate(
           xpath,
           document,
