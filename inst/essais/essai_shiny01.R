@@ -48,16 +48,26 @@ ui <- fluidPage(
   # ),
   sidebarLayout(
     sidebarPanel(
-      shinyFilesButton(
-        "file",
-        label = "Browse",
-        title = "Choose a C or C++ file",
-        multiple = FALSE,
-        buttonType = "primary"
+      splitLayout(
+        shinyFilesButton(
+          "file",
+          label = "Select a file",
+          title = "Choose a C or C++ file",
+          multiple = FALSE,
+          buttonType = "primary",
+          class = "btn-block"
+        ),
+        shinyDirButton(
+          "folder",
+          label = "Select a folder",
+          title = "Choose a folder containing C or C++ files",
+          buttonType = "primary",
+          class = "btn-block"
+        )
       ),
       br(), br(), br(),
       conditionalPanel(
-        "output.fileOK",
+        "output.fileOK || output.folderOK",
         style = "display: none;",
         selectInput(
           "std", "Select the standard",
@@ -107,12 +117,23 @@ server <- function(input, output, session){
     filetypes = c("c", "cpp", "c++")
   )
 
+  shinyDirChoose(
+    input, "folder",
+    roots = roots
+  )
+
   filePath <- reactiveVal()
+  folderPath <- reactiveVal()
 
   output[["fileOK"]] <- reactive({
     !is.null(filePath())
   })
   outputOptions(output, "fileOK", suspendWhenHidden = FALSE)
+
+  output[["folderOK"]] <- reactive({
+    !is.null(folderPath())
+  })
+  outputOptions(output, "folderOK", suspendWhenHidden = FALSE)
 
   observeEvent(input[["file"]], {
     tbl <- parseFilePaths(roots, input[["file"]])
@@ -120,6 +141,13 @@ server <- function(input, output, session){
       filePath(tbl[["datapath"]])
       fileContent <- paste0(readLines(tbl[["datapath"]]), collapse = "\n")
       updateAceEditor(session, "editor", value = fileContent)
+    }
+  })
+
+  observeEvent(input[["folder"]], {
+    tbl <- parseDirPath(roots, input[["folder"]])
+    if(nrow(tbl) != 0L){
+      folderPath(tbl[["datapath"]])
     }
   })
 
@@ -163,9 +191,9 @@ server <- function(input, output, session){
 
   output[["cppcheck"]] <- renderCppcheckR({
     req(input[["run"]])
-    # show_spinner()
+    path <- ifelse(is.null(filePath()), folderPath(), filePath())
     cppcheckR(
-      filePath(), std = input[["std"]], def = def(), undef = undef(),
+      path, std = input[["std"]], def = def(), undef = undef(),
       checkConfig = input[["checkconfig"]]
     )
   })
