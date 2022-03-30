@@ -14,6 +14,7 @@ $(document).ready(function(){
       $(".shinybusy").addClass("shinybusy-busy");
       $(".shinybusy").removeClass("shinybusy-ready");
       $("#file").prop("disabled", true);
+      $("#folder").prop("disabled", true);
       $("#run").prop("disabled", true).text("Running...");
     }
   }).on("shiny:recalculated", function(){
@@ -21,6 +22,7 @@ $(document).ready(function(){
       $(".shinybusy").removeClass("shinybusy-busy");
       $(".shinybusy").addClass("shinybusy-ready");
       $("#file").prop("disabled", false);
+      $("#folder").prop("disabled", false);
       $("#run").prop("disabled", false).text("Check");
     }
     notstart = true;
@@ -145,9 +147,10 @@ server <- function(input, output, session){
   })
 
   observeEvent(input[["folder"]], {
-    tbl <- parseDirPath(roots, input[["folder"]])
-    if(nrow(tbl) != 0L){
-      folderPath(tbl[["datapath"]])
+    path <- parseDirPath(roots, input[["folder"]])
+    print(path)
+    if(length(path) != 0L){
+      folderPath(path)
     }
   })
 
