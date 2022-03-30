@@ -7,6 +7,8 @@
 cppcheckR(
   path,
   std = NULL,
+  def = NULL,
+  undef = NULL,
   checkConfig = FALSE,
   width = NULL,
   height = NULL,

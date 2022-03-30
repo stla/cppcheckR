@@ -250,6 +250,7 @@ getOptions <- function(path){
 #' <Add Description>
 #'
 #' @import htmlwidgets
+#' @importFrom utils URLencode
 #'
 #' @export
 cppcheckR <- function(
