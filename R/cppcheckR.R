@@ -12,14 +12,27 @@ isRcppFile <- function(path){
   test <- TRUE
   while(test && i < nlines){
     i <- i + 1L
-    test <- !grepl("Rcpp.h", fileLines[i], fixed = TRUE)
+    test <- !grepl("Rcpp", fileLines[i], fixed = TRUE)
   }
   !test
 }
 
+dep_RcppEigen <- function(path){
+  fileLines <- readLines(path)
+  nlines <- length(fileLines)
+  i <- 0L
+  test <- TRUE
+  while(test && i < nlines){
+    i <- i + 1L
+    test <- !grepl("RcppEigen", fileLines[i], fixed = TRUE)
+  }
+  !test
+}
+
+
 #' @importFrom xml2 read_xml as_list xml_child xml_length xml_remove xml_contents
 #' @noRd
-cppcheck0 <- function(path, Rcpp, include, std){
+cppcheck0 <- function(path, Rcpp, RcppDeps, include, std){
   if(Sys.which("cppcheck") == ""){
     stop("This package requires 'cppcheck' and it doesn't find it.")
   }
@@ -46,6 +59,14 @@ cppcheck0 <- function(path, Rcpp, include, std){
     if(dir.exists(path) && "RcppExports.cpp" %in% list.files(path)){
       exclude <- path.expand(file.path(path, "RcppExports.cpp"))
       args <- c(args, paste0("-i", exclude))
+    }
+    for(dep in RcppDeps){
+      dep_include <- system.file("include", package = dep)
+      args <- c(
+        args,
+        paste0("--include=", file.path(dep_include, paste0(dep, ".h"))),
+        sprintf("--suppress=*:%s/*", dep_include)
+      )
     }
   }
   if(!is.null(include)){
@@ -116,17 +137,33 @@ cppcheck <- function(path, std){
     stop("Invalid path.")
   }
   pPath <- pkgPath(path)
+  RcppDeps <- character(0L)
   if(!is.null(pPath)){
     desc <- pkg_desc(pPath)
     Rcpp <- desc$has_dep("Rcpp", "LinkingTo")
+    if(Rcpp){
+      if(desc$has_dep("RcppEigen", "LinkingTo")){
+        RcppDeps <- c(RcppDeps, "RcppEigen")
+      }
+    }
     include <- file.path(pPath, "inst", "include")
     if(!dir.exists(include)){
       include <- NULL
     }
-    cppcheck0(path = path, Rcpp = Rcpp, include = include, std = std)
+    cppcheck0(
+      path = path, Rcpp = Rcpp, RcppDeps = RcppDeps,
+      include = include, std = std
+    )
   }else if(isFile(path)){
     Rcpp <- isRcppFile(path)
-    cppcheck0(path = path, Rcpp = Rcpp, include = NULL, std = std)
+    if(Rcpp){
+      if(dep_RcppEigen(path)){
+        RcppDeps <- c(RcppDeps, "RcppEigen")
+      }
+    }
+    cppcheck0(
+      path = path, Rcpp = Rcpp, RcppDeps = RcppDeps, include = NULL, std = std
+    )
   }else{ # path is a folder
     files <- list.files("path", "[\\.cpp|\\.h]$", full.names = TRUE)
     Rcpp <- FALSE
@@ -136,7 +173,17 @@ cppcheck <- function(path, std){
         break
       }
     }
-    cppcheck0(path = path, Rcpp = Rcpp, include = NULL, std = std)
+    if(Rcpp){
+      for(f in files){
+        if(dep_RcppEigen(f)){
+          RcppDeps <- c(RcppDeps, "RcppEigen")
+          break
+        }
+      }
+    }
+    cppcheck0(
+      path = path, Rcpp = Rcpp, RcppDeps = RcppDeps, include = NULL, std = std
+    )
   }
 }
 
