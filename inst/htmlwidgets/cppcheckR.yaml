@@ -3,3 +3,7 @@ dependencies:
    version: 4.0.7
    src: htmlwidgets/lib
    script: fxp.min.js
+ - name: json-format-highlight
+   version: 1.0.4
+   src: htmlwidgets/lib
+   script: json-format-highlight.js

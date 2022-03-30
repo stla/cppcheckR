@@ -29,6 +29,7 @@ cppcheck0 <- function(path, Rcpp, include, std){
       "--xml",
       "--force",
       "--enable=all",
+      "--verbose",
       paste0("--std=", std),
       "--suppress=ConfigurationNotChecked",
       "--suppress=missingIncludeSystem",

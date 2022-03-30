@@ -8,6 +8,13 @@ function jUnescape(obj) {
   return JSON.parse(j);
 }
 
+function replacer(key, value) {
+  if (key === "@_line" || key === "@_column") {
+    return parseInt(value);
+  }
+  return value;
+}
+
 HTMLWidgets.widget({
   name: "cppcheckR",
 
@@ -15,18 +22,29 @@ HTMLWidgets.widget({
 
   factory: function (el, width, height) {
     const parser = new fxp.XMLParser({ ignoreAttributes: false });
+    const customColorOptions = {
+      keyColor: "crimson",
+      numberColor: "chartreuse",
+      stringColor: "lightcoral",
+      trueColor: "#00cc00",
+      falseColor: "#ff8080",
+      nullColor: "cornflowerblue"
+    };
 
     return {
       renderValue: function (x) {
         var json = parser.parse(decodeURI(x.xmlContent));
         console.log(json);
         var errors = json.results.errors.error;
-        for(var i=0; i < errors.length; i++){
-          json.results.errors.error[i]["@_verbose"] =
-          errors[i]["@_verbose"].replace(/\\012/g, "\n");
+        for (var i = 0; i < errors.length; i++) {
+          json.results.errors.error[i]["@_verbose"] = errors[i][
+            "@_verbose"
+          ].replace(/\\012/g, "\n");
         }
         var pre = document.createElement("PRE");
-        pre.innerText = jUnescape(JSON.stringify(json, null, 2));//.replace(/\\012/g, "\\$&");
+        pre.innerHTML = jsonFormatHighlight(
+          jUnescape(JSON.stringify(json, replacer, 2)), customColorOptions
+        );
         pre.style.whiteSpace = "pre-wrap";
         el.style.color = "#E76900";
         el.style.backgroundColor = "#051C55";
