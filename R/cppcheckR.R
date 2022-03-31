@@ -95,8 +95,6 @@ cppcheck <- function(
     args <- c(args, paste0("-I", include))
   }
   args <- c(args, path)
-  cat("args:\n")
-  print(args)
   xmlFile <- tempfile(fileext = ".xml")
   CPPCHECK <- suppressWarnings(
     system2("cppcheck", args, stdout = "", stderr = xmlFile)
@@ -105,7 +103,6 @@ cppcheck <- function(
     stop(CPPCHECK)
   }
   XML <- read_xml(xmlFile)
-  print(as.character(XML))
   errors <- xml_child(XML, "errors")
   if(xml_length(errors) == 0L){
     xml_remove(xml_contents(errors))
