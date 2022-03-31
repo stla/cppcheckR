@@ -50,6 +50,7 @@ ui <- fluidPage(
   # ),
   sidebarLayout(
     sidebarPanel(
+      tags$span("Cppcheck", style = "font-size:30px; font-style: italic;"),
       splitLayout(
         shinyFilesButton(
           "file",
@@ -57,14 +58,16 @@ ui <- fluidPage(
           title = "Choose a C or C++ file",
           multiple = FALSE,
           buttonType = "primary",
-          class = "btn-block"
+          class = "btn-block",
+          onclick = "$('#cppcheck').css('height', '45vh');"
         ),
         shinyDirButton(
           "folder",
           label = "Select a folder",
           title = "Choose a folder containing C or C++ files",
           buttonType = "primary",
-          class = "btn-block"
+          class = "btn-block",
+          onclick = "$('#cppcheck').css('height', '90vh');"
         )
       ),
       br(), br(), br(),
@@ -77,7 +80,7 @@ ui <- fluidPage(
             c("c89", "c99", "c11", "c++03", "c++11", "c++14", "c++17", "c++20")
         ),
         br(),
-        checkboxInput("checkconfig", "Check config"),
+        awesomeCheckbox("checkconfig", "Check config"),
         br(),
         h4("Define/undefine a symbol:"),
         actionGroupButtons(
