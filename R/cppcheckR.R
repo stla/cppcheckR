@@ -94,6 +94,12 @@ cppcheck <- function(
   if(!is.null(include)){
     args <- c(args, paste0("-I", include))
   }
+  pathtype <- "folder"
+  if(isFile(path)){
+    pathtype <- "file"
+  }
+  msg <- sprintf("Running Cppcheck on %s '%s' with options:\n", pathtype, path)
+  message(msg, paste0(args, "\n"))
   args <- c(args, path)
   xmlFile <- tempfile(fileext = ".xml")
   CPPCHECK <- suppressWarnings(
