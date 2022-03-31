@@ -4,7 +4,7 @@
 \alias{cppcheckR-shiny}
 \alias{cppcheckROutput}
 \alias{renderCppcheckR}
-\title{Shiny bindings for cppcheckR}
+\title{Shiny bindings for \code{cppcheckR}}
 \usage{
 cppcheckROutput(outputId, width = "100\%", height = "400px")
 
@@ -13,18 +13,24 @@ renderCppcheckR(expr, env = parent.frame(), quoted = FALSE)
 \arguments{
 \item{outputId}{output variable to read from}
 
-\item{width, height}{Must be a valid CSS unit (like \code{'100\%'},
-\code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
-string and have \code{'px'} appended.}
+\item{width, height}{a valid CSS unit (like \code{"100\%"},
+\code{"400px"}, \code{"auto"}) or a number, which will be coerced to a
+string and have \code{"px"} appended}
 
-\item{expr}{An expression that generates a cppcheckR}
+\item{expr}{an expression that generates a '\code{\link{cppcheckR}}' widget}
 
-\item{env}{The environment in which to evaluate \code{expr}.}
+\item{env}{the environment in which to evaluate \code{expr}}
 
-\item{quoted}{Is \code{expr} a quoted expression (with \code{quote()})? This
-is useful if you want to save an expression in a variable.}
+\item{quoted}{logical, whether \code{expr} is a quoted expression (with
+\code{quote()})}
+}
+\value{
+\code{cppcheckROutput} returns an output element that can be
+  included in a Shiny UI definition, and \code{renderCppcheckRR} returns a
+  \code{shiny.render.function} object that can be included in a Shiny server
+  definition.
 }
 \description{
-Output and render functions for using cppcheckR within Shiny
-applications and interactive Rmd documents.
+Output and render functions for using \code{cppcheckR} within
+  Shiny applications and interactive Rmd documents.
 }

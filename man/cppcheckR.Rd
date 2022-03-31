@@ -2,7 +2,7 @@
 % Please edit documentation in R/cppcheckR.R
 \name{cppcheckR}
 \alias{cppcheckR}
-\title{<Add Title>}
+\title{Check a C/C++ file or a folder}
 \usage{
 cppcheckR(
   path,
@@ -15,6 +15,29 @@ cppcheckR(
   elementId = NULL
 )
 }
+\arguments{
+\item{path}{path to a C/C++ file or to a folder containing C/C++ files}
+
+\item{std}{the standard, one of \code{"c89"}, \code{"c99"}, \code{"c11"},
+\code{"c++03"}, \code{"c++11"}, \code{"c++14"}, \code{"c++17"},
+\code{"c++20"}; if \code{NULL}, you will be prompted to select it}
+
+\item{def}{character vector of symbols you want to define, e.g.
+\code{"__cplusplus"} or \code{"DEBUG=1"}; if \code{NULL},
+you will be prompted to enter them; set \code{def=NA} if you don't want
+to define any symbol}
+
+\item{undef}{character vector of symbols you want to undefine;
+if \code{NULL}, you will be prompted to enter them; set \code{undef=NA}
+if you don't want to undefine any symbol}
+
+\item{checkConfig}{Boolean, whether to run \strong{Cppcheck} with the
+option \code{--check-config}; this tells you which header files are missing}
+
+\item{width, height}{width/height in pixels (defaults to automatic sizing)}
+
+\item{elementId}{an id for the widget, this is usually useless}
+}
 \description{
-<Add Description>
+HTML widget which runs \strong{Cppcheck}.
 }

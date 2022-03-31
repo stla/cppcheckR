@@ -245,11 +245,27 @@ getOptions <- function(path){
 }
 
 
-#' <Add Title>
+#' @title Check a C/C++ file or a folder
 #'
-#' <Add Description>
+#' @description HTML widget which runs \strong{Cppcheck}.
 #'
-#' @import htmlwidgets
+#' @param path path to a C/C++ file or to a folder containing C/C++ files
+#' @param std the standard, one of \code{"c89"}, \code{"c99"}, \code{"c11"},
+#'   \code{"c++03"}, \code{"c++11"}, \code{"c++14"}, \code{"c++17"},
+#'   \code{"c++20"}; if \code{NULL}, you will be prompted to select it
+#' @param def character vector of symbols you want to define, e.g.
+#'   \code{"__cplusplus"} or \code{"DEBUG=1"}; if \code{NULL},
+#'   you will be prompted to enter them; set \code{def=NA} if you don't want
+#'   to define any symbol
+#' @param undef character vector of symbols you want to undefine;
+#'   if \code{NULL}, you will be prompted to enter them; set \code{undef=NA}
+#'   if you don't want to undefine any symbol
+#' @param checkConfig Boolean, whether to run \strong{Cppcheck} with the
+#'   option \code{--check-config}; this tells you which header files are missing
+#' @param width,height width/height in pixels (defaults to automatic sizing)
+#' @param elementId an id for the widget, this is usually useless
+#'
+#' @importFrom htmlwidgets createWidget
 #' @importFrom utils URLencode
 #'
 #' @export
@@ -265,13 +281,15 @@ cppcheckR <- function(
   }
   if(is.null(def)){
     def <- cppcheck_prompt_def()
+  }else if(is.na(def)){
+    def <- NULL
   }
   if(is.null(undef)){
     undef <- cppcheck_prompt_undef()
+  }else if(is.na(undef)){
+    undef <- NULL
   }
   opts <- getOptions(path)
-  cat("opts:\n")
-  print(opts)
   cppcheckResults <- cppcheck(
     path = path, Rcpp = opts[["Rcpp"]], RcppDeps = opts[["RcppDeps"]],
     include = opts[["include"]], std = std, def = def, undef = undef,
@@ -284,12 +302,12 @@ cppcheckR <- function(
   )
 
   # create widget
-  htmlwidgets::createWidget(
-    name = 'cppcheckR',
+  createWidget(
+    name = "cppcheckR",
     x,
     width = width,
     height = height,
-    package = 'cppcheckR',
+    package = "cppcheckR",
     elementId = elementId
   )
 }
@@ -324,30 +342,52 @@ cppcheck_addin_folder <- function(){
   cppcheckR(dirname(path))
 }
 
-#' Shiny bindings for cppcheckR
+#' @title Shiny bindings for \code{cppcheckR}
 #'
-#' Output and render functions for using cppcheckR within Shiny
-#' applications and interactive Rmd documents.
+#' @description Output and render functions for using \code{cppcheckR} within
+#'   Shiny applications and interactive Rmd documents.
 #'
 #' @param outputId output variable to read from
-#' @param width,height Must be a valid CSS unit (like \code{'100\%'},
-#'   \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
-#'   string and have \code{'px'} appended.
-#' @param expr An expression that generates a cppcheckR
-#' @param env The environment in which to evaluate \code{expr}.
-#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
-#'   is useful if you want to save an expression in a variable.
+#' @param width,height a valid CSS unit (like \code{"100\%"},
+#'   \code{"400px"}, \code{"auto"}) or a number, which will be coerced to a
+#'   string and have \code{"px"} appended
+#' @param expr an expression that generates a '\code{\link{cppcheckR}}' widget
+#' @param env the environment in which to evaluate \code{expr}
+#' @param quoted logical, whether \code{expr} is a quoted expression (with
+#'   \code{quote()})
+#'
+#' @return \code{cppcheckROutput} returns an output element that can be
+#'   included in a Shiny UI definition, and \code{renderCppcheckRR} returns a
+#'   \code{shiny.render.function} object that can be included in a Shiny server
+#'   definition.
+#'
+#' @importFrom htmlwidgets shinyWidgetOutput shinyRenderWidget
 #'
 #' @name cppcheckR-shiny
 #'
 #' @export
-cppcheckROutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'cppcheckR', width, height, package = 'cppcheckR')
+cppcheckROutput <- function(outputId, width = "100%", height = "400px"){
+  shinyWidgetOutput(outputId, "cppcheckR", width, height, package = "cppcheckR")
 }
 
 #' @rdname cppcheckR-shiny
 #' @export
 renderCppcheckR <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  htmlwidgets::shinyRenderWidget(expr, cppcheckROutput, env, quoted = TRUE)
+  shinyRenderWidget(expr, cppcheckROutput, env, quoted = TRUE)
+}
+
+
+#' @title Shiny application to check C/C++
+#' @description Run a shiny application to check C/C++ files.
+#'
+#' @return Nothing, this just launches a Shiny app.
+#'
+#' @note The packages listed in the \strong{Suggests} field of the
+#'   package description are required.
+#'
+#' @importFrom shiny shinyAppDir
+#' @export
+shinyCppcheck <- function(){
+  shinyAppDir(system.file("shinyapp", package = "cppcheckR"))
 }
