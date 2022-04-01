@@ -278,7 +278,7 @@ getOptions <- function(path){
 #'   lines <- readLines(filepath)
 #'   print(cppcheckR(filepath, std = "c++03", def = NA, undef = NA))
 #'   message(file, ":")
-#'   cat(paste0(seq_along(lines), ". ", lines), sep = "\n")
+#'   cat(paste0(format(seq_along(lines)), ". ", lines), sep = "\n")
 #' }
 #' example("memleak.cpp")
 #' example("outofbounds.cpp")
