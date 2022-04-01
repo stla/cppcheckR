@@ -1,7 +1,7 @@
 Package: cppcheckR
 Type: Package
 Title: Check 'C' and 'C++' Files with a R Command or a 'RStudio' Addin
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person(
       "Stéphane", "Laurent", 
