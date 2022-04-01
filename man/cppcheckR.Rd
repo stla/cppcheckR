@@ -10,7 +10,6 @@ cppcheckR(
   def = NULL,
   undef = NULL,
   checkConfig = FALSE,
-  width = NULL,
   height = NULL,
   elementId = NULL
 )
@@ -34,7 +33,7 @@ if you don't want to undefine any symbol}
 \item{checkConfig}{Boolean, whether to run \strong{Cppcheck} with the
 option \code{--check-config}; this tells you which header files are missing}
 
-\item{width, height}{width/height in pixels (defaults to automatic sizing)}
+\item{height}{height in pixels (defaults to automatic sizing)}
 
 \item{elementId}{an id for the widget, this is usually useless}
 }

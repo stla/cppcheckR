@@ -265,7 +265,7 @@ getOptions <- function(path){
 #'   if you don't want to undefine any symbol
 #' @param checkConfig Boolean, whether to run \strong{Cppcheck} with the
 #'   option \code{--check-config}; this tells you which header files are missing
-#' @param width,height width/height in pixels (defaults to automatic sizing)
+#' @param height height in pixels (defaults to automatic sizing)
 #' @param elementId an id for the widget, this is usually useless
 #'
 #' @importFrom htmlwidgets createWidget
@@ -286,7 +286,7 @@ getOptions <- function(path){
 #' example("useless.cpp")
 cppcheckR <- function(
   path, std = NULL, def = NULL, undef = NULL, checkConfig = FALSE,
-  width = NULL, height = NULL, elementId = NULL
+  height = NULL, elementId = NULL
 ){
 
   if(Sys.which("cppcheck") == ""){
@@ -340,7 +340,7 @@ cppcheckR <- function(
   createWidget(
     name = "cppcheckR",
     x,
-    width = width,
+    width = NULL,
     height = height,
     package = "cppcheckR",
     elementId = elementId

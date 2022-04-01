@@ -64,6 +64,25 @@ HTMLWidgets.widget({
           el.style.padding = "10px";
           el.appendChild(span);
         } else {
+          var style = document.createElement("style");
+          style.textContent =
+            ".cppcheckR::-webkit-scrollbar-track {" +
+            "  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);" +
+            "  border-radius: 10px;" +
+            "  background-color: #F5F5F5;" +
+            "}" +
+            ".cppcheckR::-webkit-scrollbar {" +
+            "  width: 8px;" +
+            "  height: 8px;" +
+            "  background-color: transparent;" +
+            "}" +
+            ".cppcheckR::-webkit-scrollbar-thumb {" +
+            "  border-radius: 10px;" +
+            "  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);" +
+            "  background-color: #D62929;" +
+            "}";
+          document.head.appendChild(style);
+
           var json = parser.parse(decodeURI(x.xmlContent));
           console.log(json);
           var errors = json.results.errors.error;
@@ -76,16 +95,18 @@ HTMLWidgets.widget({
           }
           console.log(JSON.stringify(json, replacer, 2));
           var pre = document.createElement("PRE");
-          pre.innerHTML = jsonFormatHighlight(
-            jUnescape(JSON.stringify(json, replacer, 2)),
-            customColorOptions
-          );
+          var jsonString = jUnescape(JSON.stringify(json, replacer, 2));
+          pre.innerHTML = jsonFormatHighlight(jsonString, customColorOptions);
           pre.style.whiteSpace = "pre-wrap";
           pre.style.outline = "#051C55 solid 10px";
           pre.style.backgroundColor = "#051C55";
           pre.style.color = "#E76900";
           pre.style.fontSize = "15px";
           pre.style.fontWeight = "bold";
+          pre.style.margin = "0";
+          el.style.display = "flex";
+          el.style.flexFlow = "column";
+          el.style.width = "auto";
           el.style.overflowY = "auto";
           el.style.padding = "10px";
 
@@ -96,6 +117,33 @@ HTMLWidgets.widget({
           title.style.textDecoration = "underline";
           title.style.color = "lime";
           pre.prepend(title);
+
+          var btn = document.createElement("button");
+          btn.innerHTML = "Copy";
+          btn.onclick = function () {
+            navigator.clipboard.writeText(jsonString);
+          };
+          btn.style.float = "right";
+          btn.style.padding = "5px 12px";
+          btn.style.marginTop = "5px";
+          btn.style.borderRadius = "100%";
+          btn.style.backgroundColor = "darkmagenta";
+          btn.style.borderWidth = "1.5px";
+          btn.style.borderColor = "yellow";
+          btn.style.backgroundImage =
+            "linear-gradient(-20deg, darkmagenta 20%, #e61d8c 90%)";
+          btn.onmouseover = function () {
+            this.style.backgroundImage =
+              "linear-gradient(200deg, darkmagenta 20%, #e61d8c 90%)";
+          };
+          btn.onmouseout = function () {
+            this.style.backgroundImage =
+              "linear-gradient(-20deg, darkmagenta 20%, #e61d8c 90%)";
+          };
+          btn.onfocus = function () {
+            this.style.outline = "none";
+          };
+          pre.prepend(btn);
 
           el.appendChild(pre);
 
