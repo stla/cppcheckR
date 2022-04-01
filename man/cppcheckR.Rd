@@ -41,3 +41,16 @@ option \code{--check-config}; this tells you which header files are missing}
 \description{
 HTML widget which runs \strong{Cppcheck}.
 }
+\examples{
+example <- function(file){
+  filepath <- system.file("examples", file, package = "cppcheckR")
+  lines <- readLines(filepath)
+  print(cppcheckR(filepath, std = "c++03", def = NA, undef = NA))
+  message(file, ":")
+  cat(paste0(seq_along(lines), ". ", lines), sep = "\n")
+}
+example("memleak.cpp")
+example("outofbounds.cpp")
+example("unusedvar.cpp")
+example("useless.cpp")
+}

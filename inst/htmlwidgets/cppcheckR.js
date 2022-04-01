@@ -36,72 +36,109 @@ HTMLWidgets.widget({
 
     return {
       renderValue: function (x) {
-        var json = parser.parse(decodeURI(x.xmlContent));
-        console.log(json);
-        var errors = json.results.errors.error;
-        if (errors) {
-          for (var i = 0; i < errors.length; i++) {
-            json.results.errors.error[i]["@_verbose"] = errors[i][
-              "@_verbose"
-            ].replace(/\\012/g, "\n");
-          }
-        }
-        console.log(JSON.stringify(json, replacer, 2));
-        var pre = document.createElement("PRE");
-        pre.innerHTML = jsonFormatHighlight(
-          jUnescape(JSON.stringify(json, replacer, 2)),
-          customColorOptions
-        );
-        pre.style.whiteSpace = "pre-wrap";
-        pre.style.outline = "#051C55 solid 10px";
-        pre.style.backgroundColor = "#051C55";
-        pre.style.color = "#E76900";
-        pre.style.fontSize = "15px";
-        pre.style.fontWeight = "bold";
-        el.style.overflowY = "auto";
-        el.style.padding = "10px";
-
-        el.appendChild(pre);
-
-        var locations = document.evaluate(
-          "//span[text()='\"location\":']",
-          document,
-          null,
-          XPathResult.ORDERED_NODE_ITERATOR_TYPE,
-          null
-        );
-        var location = locations.iterateNext();
-        while (location) {
-          location.style.borderTop = "2px solid";
-          location = locations.iterateNext();
-        }
-
-        var spans = document.evaluate(
-          "//span[text()='\"@_cwe\":']",
-          document,
-          null,
-          XPathResult.ORDERED_NODE_ITERATOR_TYPE,
-          null
-        );
-        var result = spans.iterateNext();
-        var results = [];
-        while (result) {
-          results.push(result);
-          result = spans.iterateNext();
-        }
-        for (var i = 0; i < results.length; i++) {
-          var span = results[i].nextElementSibling;
-          var code = parseInt(JSON.parse(span.innerText));
-          span.innerText = "";
+        if (x.notfound) {
           var a = document.createElement("A");
           a.style.color = "aquamarine";
           a.style.textDecoration = "underline";
-          a.setAttribute(
-            "href",
-            "https://cwe.mitre.org/data/definitions/" + code + ".html"
+          a.setAttribute("href", "https://cppcheck.sourceforge.io/");
+          a.appendChild(
+            document.createTextNode("https://cppcheck.sourceforge.io/")
           );
-          a.appendChild(document.createTextNode(code));
+          var span = document.createElement("SPAN");
+          span.appendChild(
+            document.createTextNode(
+              "'Cppcheck' not found. Either it is not installed or it is " +
+                "not in the PATH. If it is not installed, visit "
+            )
+          );
           span.appendChild(a);
+          span.appendChild(document.createTextNode("."));
+          span.style.whiteSpace = "pre-wrap";
+          el.style.outline = "#051C55 solid 10px";
+          el.style.backgroundColor = "#051C55";
+          el.style.marginLeft = "auto";
+          el.style.marginRight = "auto";
+          span.style.color = "#E76900";
+          span.style.fontSize = "15px";
+          span.style.fontWeight = "bold";
+          el.style.padding = "10px";
+          el.appendChild(span);
+        } else {
+          var json = parser.parse(decodeURI(x.xmlContent));
+          console.log(json);
+          var errors = json.results.errors.error;
+          if (errors) {
+            for (var i = 0; i < errors.length; i++) {
+              json.results.errors.error[i]["@_verbose"] = errors[i][
+                "@_verbose"
+              ].replace(/\\012/g, "\n");
+            }
+          }
+          console.log(JSON.stringify(json, replacer, 2));
+          var pre = document.createElement("PRE");
+          pre.innerHTML = jsonFormatHighlight(
+            jUnescape(JSON.stringify(json, replacer, 2)),
+            customColorOptions
+          );
+          pre.style.whiteSpace = "pre-wrap";
+          pre.style.outline = "#051C55 solid 10px";
+          pre.style.backgroundColor = "#051C55";
+          pre.style.color = "#E76900";
+          pre.style.fontSize = "15px";
+          pre.style.fontWeight = "bold";
+          el.style.overflowY = "auto";
+          el.style.padding = "10px";
+
+          var title = document.createElement("P");
+          title.appendChild(document.createTextNode(x.title));
+          title.style.fontSize = "16px";
+          title.style.fontStyle = "italic";
+          title.style.textDecoration = "underline";
+          title.style.color = "lime";
+          pre.prepend(title);
+
+          el.appendChild(pre);
+
+          var locations = document.evaluate(
+            "//span[text()='\"location\":']",
+            document,
+            null,
+            XPathResult.ORDERED_NODE_ITERATOR_TYPE,
+            null
+          );
+          var location = locations.iterateNext();
+          while (location) {
+            location.style.borderTop = "2px solid";
+            location = locations.iterateNext();
+          }
+
+          var spans = document.evaluate(
+            "//span[text()='\"@_cwe\":']",
+            document,
+            null,
+            XPathResult.ORDERED_NODE_ITERATOR_TYPE,
+            null
+          );
+          var result = spans.iterateNext();
+          var results = [];
+          while (result) {
+            results.push(result);
+            result = spans.iterateNext();
+          }
+          for (var i = 0; i < results.length; i++) {
+            var span = results[i].nextElementSibling;
+            var code = parseInt(JSON.parse(span.innerText));
+            span.innerText = "";
+            var a = document.createElement("A");
+            a.style.color = "aquamarine";
+            a.style.textDecoration = "underline";
+            a.setAttribute(
+              "href",
+              "https://cwe.mitre.org/data/definitions/" + code + ".html"
+            );
+            a.appendChild(document.createTextNode(code));
+            span.appendChild(a);
+          }
         }
       },
 

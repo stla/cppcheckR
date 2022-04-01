@@ -272,10 +272,35 @@ getOptions <- function(path){
 #' @importFrom utils URLencode
 #'
 #' @export
+#' @examples
+#' example <- function(file){
+#'   filepath <- system.file("examples", file, package = "cppcheckR")
+#'   lines <- readLines(filepath)
+#'   print(cppcheckR(filepath, std = "c++03", def = NA, undef = NA))
+#'   message(file, ":")
+#'   cat(paste0(seq_along(lines), ". ", lines), sep = "\n")
+#' }
+#' example("memleak.cpp")
+#' example("outofbounds.cpp")
+#' example("unusedvar.cpp")
+#' example("useless.cpp")
 cppcheckR <- function(
   path, std = NULL, def = NULL, undef = NULL, checkConfig = FALSE,
   width = NULL, height = NULL, elementId = NULL
 ){
+
+  if(Sys.which("cppcheck") == ""){
+    return(
+      createWidget(
+        name = "cppcheckR",
+        list(notfound = TRUE),
+        width = "90vw",
+        height = "auto",
+        package = "cppcheckR",
+        elementId = elementId
+      )
+    )
+  }
 
   if(!is.null(std)){
     std <- match.arg(std, standards())
@@ -299,8 +324,15 @@ cppcheckR <- function(
     checkConfig = checkConfig
   )
 
+  if(isFile(path)){
+    title <- basename(path)
+  }else{
+    title <- basename(normalizePath(path))
+  }
+
   # forward options using x
   x = list(
+    title = title,
     xmlContent = URLencode(cppcheckResults)
   )
 
