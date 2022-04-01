@@ -14,6 +14,8 @@ function replacer(key, value) {
     return parseInt(value);
   } else if (key === "@_file") {
     return value.replace(/\\/g, "/");
+  } else if (key === "?xml") {
+    return undefined;
   }
   return value;
 }
@@ -116,6 +118,7 @@ HTMLWidgets.widget({
           title.style.fontStyle = "italic";
           title.style.textDecoration = "underline";
           title.style.color = "lime";
+          title.style.marginTop = "4px";
           pre.prepend(title);
 
           var btn = document.createElement("button");
@@ -144,6 +147,39 @@ HTMLWidgets.widget({
             this.style.outline = "none";
           };
           pre.prepend(btn);
+
+          var btnsave = document.createElement("button");
+          btnsave.innerHTML = "Save";
+          btnsave.onclick = function(){
+            var a = document.createElement("a");
+            document.body.append(a);
+            a.download = "cppcheck.json";
+            var b64 = btoa(unescape(encodeURIComponent(jsonString)));
+            a.href = "data:text/plain;base64," + b64;
+            a.click();
+            a.remove();
+          };
+          btnsave.style.float = "right";
+          btnsave.style.padding = "5px 12px";
+          btnsave.style.marginTop = "5px";
+          btnsave.style.borderRadius = "100%";
+          btnsave.style.backgroundColor = "darkmagenta";
+          btnsave.style.borderWidth = "1.5px";
+          btnsave.style.borderColor = "yellow";
+          btnsave.style.backgroundImage =
+            "linear-gradient(-20deg, darkmagenta 20%, #e61d8c 90%)";
+          btnsave.onmouseover = function () {
+            this.style.backgroundImage =
+              "linear-gradient(200deg, darkmagenta 20%, #e61d8c 90%)";
+          };
+          btnsave.onmouseout = function () {
+            this.style.backgroundImage =
+              "linear-gradient(-20deg, darkmagenta 20%, #e61d8c 90%)";
+          };
+          btnsave.onfocus = function () {
+            this.style.outline = "none";
+          };
+          pre.appendChild(btnsave);
 
           el.appendChild(pre);
 
