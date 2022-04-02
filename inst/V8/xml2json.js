@@ -10,18 +10,18 @@ function jUnescape(obj) {
   return JSON.parse(j);
 }
 
-function replacer(key, value) {
+/*function replacer(key, value) {
   if(typeof value === "string"){
     return value.replace(/\\n/g, "\n");
   }
   return value;
-}
+}*/
 
-function xml2json(xml, spaces, options, linebreaks){
+function xml2json(xml, spaces, options, linebreaks, replacer){
   const parser = new fxp.XMLParser(options);
   var replacement = linebreaks ? "\n" : "\\n";
   var obj = parser.parse(decodeURI(xml).replace(/\\012/g, replacement));
-  var json = JSON.stringify(obj, null, spaces);
+  var json = JSON.stringify(obj, replacer, spaces);
   if(linebreaks){
     json = json.replace(/\\n/g, "\n");
   }

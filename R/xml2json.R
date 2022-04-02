@@ -23,6 +23,7 @@ xml2json <- function(
   xml,
   spaces = 2L,
   linebreaks = TRUE,
+  replacer = NULL,
   attributeNamePrefix = "@_",
   textNodeName = "#text",
   ignoreAttributes = FALSE,
@@ -48,5 +49,16 @@ xml2json <- function(
   ctx <- v8()
   ctx$source(fxp)
   ctx$source(jsfile)
-  ctx$call("xml2json", URLencode(xml), spaces, opts, linebreaks)
+  ctx$call("xml2json", URLencode(xml), spaces, opts, linebreaks, replacer)
 }
+
+# js <- c(
+#   'function replacer(key, value) {',
+#   '  if(key === "@_type"){',
+#   '    return undefined;',
+#   '  } else if(key === "@_name"){',
+#   '    return value.toUpperCase();',
+#   '  }',
+#   '  return value;',
+#   '}'
+# )
