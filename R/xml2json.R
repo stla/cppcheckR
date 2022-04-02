@@ -1,3 +1,22 @@
+#' Title
+#'
+#' @param xml
+#' @param spaces
+#' @param attributeNamePrefix
+#' @param textNodeName
+#' @param ignoreAttributes
+#' @param ignoreNameSpace
+#' @param parseNodeValue
+#' @param parseAttributeValue
+#' @param trimValues
+#'
+#' @return
+#' @export
+#'
+#' @importFrom V8 v8
+#' @importFrom utils URLencode
+#'
+#' @examples
 xml2json <- function(
   xml,
   spaces = 2L,
@@ -23,6 +42,7 @@ xml2json <- function(
   )
   fxp <- system.file("htmlwidgets", "lib", "fxp.min.js", package = "cppcheckR")
   jsfile <- system.file("V8", "xml2json.js", package = "cppcheckR")
+  ctx <- v8()
   ctx$source(fxp)
   ctx$source(jsfile)
   ctx$call("xml2json", URLencode(xml), spaces, opts)
