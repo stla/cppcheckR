@@ -27,7 +27,3 @@ function xml2json(xml, spaces, options, linebreaks, replacer){
   }
   return json;
 }
-
-function test(x){
-  return x;
-}

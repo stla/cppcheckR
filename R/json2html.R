@@ -219,6 +219,15 @@ pandocHTML <- function(div){
 #' Title
 #'
 #' @param json
+#' @param outfile
+#' @param pandoc
+#' @param style
+#' @param keyColor
+#' @param numberColor
+#' @param stringColor
+#' @param trueColor
+#' @param falseColor
+#' @param nullColor
 #'
 #' @return
 #' @export
@@ -242,6 +251,7 @@ pandocHTML <- function(div){
 #' }
 json2html <- function(
   json,
+  outfile = NULL,
   pandoc = FALSE,
   style = paste0(
     "background-color: #051C55; color: #E76900; ",
@@ -263,7 +273,13 @@ json2html <- function(
     mdfile <- tempfile(fileext = ".md")
     writeLines(block, mdfile)
     div <- system2("pandoc", c(mdfile, "-t html"), stdout = TRUE)
-    return(pandocHTML(div))
+    html <- pandocHTML(div)
+    if(!is.null(outfile)){
+      writeLines(html, outfile)
+      return(invisible(NULL))
+    }else{
+      return(html)
+    }
   }
   jfh <- system.file(
     "htmlwidgets", "lib", "json-format-highlight.js", package = "cppcheckR"
@@ -282,8 +298,8 @@ json2html <- function(
   ctx$source(jsfile)
   json <- paste0(json, collapse = "\n")
   innerHTML <- ctx$call("json2html", URLencode(json), colors)
-  pre <- sprintf('<pre style="%s">%s</pre>', style, innerHTML)
-  c(
+  pre <- sprintf('    <pre style="%s">%s</pre>', style, innerHTML)
+  html <- c(
     "<!DOCTYPE html>",
     "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"\" xml:lang=\"\">",
     "  <head>",
@@ -300,5 +316,11 @@ json2html <- function(
     "  </body>",
     "</html>"
   )
-
+  html <- paste0(html, collapse = "\n")
+  if(!is.null(outfile)){
+    writeLines(html, outfile)
+    invisible(NULL)
+  }else{
+    html
+  }
 }
