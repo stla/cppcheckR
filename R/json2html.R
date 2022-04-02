@@ -9,12 +9,14 @@
 #' @importFrom utils URLencode
 #'
 #' @examples
-#       keyColor: "crimson",
-#       numberColor: "chartreuse",
-#       stringColor: "lightcoral",
-#       trueColor: "#00cc00",
-#       falseColor: "#ff8080",
-#       nullColor: "cornflowerblue"
+#' library(cppcheckR)
+#' xml <- system.file("extdata", "order-schema.xml", package = "xml2")
+#' json <- xml2json(xml)
+#' html <- json2html(json)
+#' library(htmltools)
+#' if(interactive()){
+#'   browsable(HTML(html))
+#' }
 json2html <- function(
   json,
   style = paste0(

@@ -2,8 +2,12 @@
 
 export(cppcheckR)
 export(cppcheckROutput)
+export(json2html)
 export(renderCppcheckR)
 export(shinyCppcheck)
+export(xml2json)
+importFrom(V8,v8)
+importFrom(htmlwidgets,JS)
 importFrom(htmlwidgets,createWidget)
 importFrom(htmlwidgets,shinyRenderWidget)
 importFrom(htmlwidgets,shinyWidgetOutput)

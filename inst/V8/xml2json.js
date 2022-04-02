@@ -19,14 +19,13 @@ function jUnescape(obj) {
 
 function xml2json(xml, spaces, options, linebreaks, replacer){
   const parser = new fxp.XMLParser(options);
-  var replacement = linebreaks ? "\n" : "\\n";
-  var obj = parser.parse(decodeURI(xml).replace(/\\012/g, replacement));
+  const replacement = linebreaks ? "\n" : "\\n";
+  const obj = parser.parse(decodeURI(xml).replace(/\\012/g, replacement));
   var json = JSON.stringify(obj, replacer, spaces);
   if(linebreaks){
     json = json.replace(/\\n/g, "\n");
   }
   return json;
-  return jUnescape(JSON.stringify(json,  null, spaces));
 }
 
 function test(x){
