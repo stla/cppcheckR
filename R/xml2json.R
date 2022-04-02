@@ -17,9 +17,12 @@
 #' @importFrom utils URLencode
 #'
 #' @examples
+#' xml <- system.file("extdata", "order-schema.xml", package = "xml2")
+#' xml2json(xml)
 xml2json <- function(
   xml,
   spaces = 2L,
+  linebreaks = TRUE,
   attributeNamePrefix = "@_",
   textNodeName = "#text",
   ignoreAttributes = FALSE,
@@ -45,5 +48,5 @@ xml2json <- function(
   ctx <- v8()
   ctx$source(fxp)
   ctx$source(jsfile)
-  ctx$call("xml2json", URLencode(xml), spaces, opts)
+  ctx$call("xml2json", URLencode(xml), spaces, opts, linebreaks)
 }

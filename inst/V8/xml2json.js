@@ -9,11 +9,19 @@ function jUnescape(obj) {
   return JSON.parse(j);
 }
 
-function xml2json(xml, spaces, options){
+function replacer(key, value) {
+  if(typeof value === "string"){
+    return value.replace(/\\n/g, "\n");
+  }
+  return value;
+}
+
+function xml2json(xml, spaces, options, linebreaks){
   const parser = new fxp.XMLParser(options);
-  var json = parser.parse(decodeURI(xml).replace(/\\012/g, "\n"));
-  //return(JSON.stringify(json, null, 2));
-  return jUnescape(JSON.stringify(json, null, spaces));
+  var replacement = linebreaks ? "\n" : "\\n";
+  var json = parser.parse(decodeURI(xml).replace(/\\012/g, replacement));
+  //return(JSON.stringify(json, linebreaks ? replacer : null, spaces));
+  return jUnescape(JSON.stringify(json,  null, spaces));
 }
 
 function test(x){
