@@ -14,11 +14,22 @@
 #' @export
 #'
 #' @importFrom V8 v8
+#' @importFrom htmlwidgets JS
 #' @importFrom utils URLencode
 #'
 #' @examples
 #' xml <- system.file("extdata", "order-schema.xml", package = "xml2")
-#' xml2json(xml)
+#' cat(xml2json(xml))
+#' #
+#' js <- c(
+#'   'if(key === "@_type"){',
+#'   '  return undefined;',
+#'   '} else if(key === "@_name"){',
+#'   '  return value.toUpperCase();',
+#'   '}',
+#'   'return value;'
+#' )
+#' cat(xml2json(xml, linebreaks = TRUE, replacer = js))
 xml2json <- function(
   xml,
   spaces = 2L,
@@ -44,6 +55,9 @@ xml2json <- function(
     parseAttributeValue = parseAttributeValue,
     trimValues          = trimValues
   )
+  if(!is.null(replacer)){
+    replacer <- JS(c("function replacer(key, value) {", replacer, "}"))
+  }
   fxp <- system.file("htmlwidgets", "lib", "fxp.min.js", package = "cppcheckR")
   jsfile <- system.file("V8", "xml2json.js", package = "cppcheckR")
   ctx <- v8()
@@ -51,14 +65,3 @@ xml2json <- function(
   ctx$source(jsfile)
   ctx$call("xml2json", URLencode(xml), spaces, opts, linebreaks, replacer)
 }
-
-# js <- c(
-#   'function replacer(key, value) {',
-#   '  if(key === "@_type"){',
-#   '    return undefined;',
-#   '  } else if(key === "@_name"){',
-#   '    return value.toUpperCase();',
-#   '  }',
-#   '  return value;',
-#   '}'
-# )
