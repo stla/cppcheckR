@@ -7,7 +7,7 @@ pandocBlock <- function(json){
 }
 
 pandocHTML <- function(div){
-  c(
+  html <- c(
     "<!DOCTYPE html>",
     "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"\" xml:lang=\"\">",
     "  <head>",
@@ -20,6 +20,7 @@ pandocHTML <- function(div){
     "    <title></title>",
     "    <style type=\"text/css\">",
     "      pre.sourceCode {",
+    "        white-space: pre-wrap;",
     "        font-size: 15px;",
     "        font-weight: bold;",
     "        outline: #051C55 solid 10px;",
@@ -60,6 +61,7 @@ pandocHTML <- function(div){
     "        position: relative;",
     "      }",
     "      div.sourceCode {",
+    "        width: fit-content;",
     "        margin: 1em 0;",
     "      }",
     "      pre.sourceCode {",
@@ -211,6 +213,7 @@ pandocHTML <- function(div){
     "  </body>",
     "</html>"
   )
+  paste0(html, collapse = "\n")
 }
 
 #' Title
@@ -258,7 +261,7 @@ json2html <- function(
   if(pandoc){
     block <- pandocBlock(json)
     mdfile <- tempfile(fileext = ".md")
-    writeLines(block, mfdile)
+    writeLines(block, mdfile)
     div <- system2("pandoc", c(mdfile, "-t html"), stdout = TRUE)
     return(pandocHTML(div))
   }
