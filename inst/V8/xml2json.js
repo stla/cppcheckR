@@ -17,11 +17,11 @@ function junescape(j){
   var j0 = j[0];
   if(j0 === "\\"){
     var x = j[1];
-    if(['\"', '\\', '/'].includes(x)){
+    if(['"', '\\', '/'].includes(x)){
       return x + junescape(j.slice(2));
     }
     if(["b", "f", "n", "r", "t", "u"].includes(x)){
-      return JSON.parse('"\\'+`${x}"`) + junescape(j.slice(2));
+      return JSON.parse(`"\\${x}"`) + junescape(j.slice(2));
     }
   }
   return j0 + junescape(j.slice(1));
