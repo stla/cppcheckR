@@ -309,12 +309,12 @@ cppcheckR <- function(
   }
   if(is.null(def)){
     def <- cppcheck_prompt_def()
-  }else if(is.na(def)){
+  }else if(length(def) == 0L || is.na(def)){
     def <- NULL
   }
   if(is.null(undef)){
     undef <- cppcheck_prompt_undef()
-  }else if(is.na(undef)){
+  }else if(length(undef) == 0L || is.na(undef)){
     undef <- NULL
   }
   opts <- getOptions(path)
