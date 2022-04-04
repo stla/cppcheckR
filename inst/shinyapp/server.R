@@ -75,8 +75,8 @@ shinyServer(function(input, output, session){
     req(input[["run"]])
     path <- ifelse(is.null(filePath()), folderPath(), filePath())
     cppcheckR(
-      path, std = input[["std"]], def = def(), undef = undef(),
-      checkConfig = input[["checkconfig"]]
+      path, std = isolate(input[["std"]]), def = def(), undef = undef(),
+      checkConfig = isolate(input[["checkconfig"]])
     )
   })
 })
