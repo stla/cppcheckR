@@ -2,12 +2,12 @@
 % Please edit documentation in R/xml2json.R
 \name{xml2json}
 \alias{xml2json}
-\title{Title}
+\title{XML to JSON}
 \usage{
 xml2json(
   xml,
   spaces = 2L,
-  linebreaks = TRUE,
+  linebreaks = FALSE,
   replacer = NULL,
   attributeNamePrefix = "@_",
   textNodeName = "#text",
@@ -19,13 +19,38 @@ xml2json(
 )
 }
 \arguments{
-\item{trimValues}{}
+\item{xml}{either a XML file or some XML given as a character string}
+
+\item{spaces}{an integer, the indentation}
+
+\item{linebreaks}{Boolean, whether to break the lines in the JSON string
+when there are some linebreaks; this generates an invalid JSON string}
+
+\item{replacer}{character vector, the body of the second argument of
+\code{JSON.stringify} (the replacer function), or \code{NULL}}
+
+\item{attributeNamePrefix}{prefix for the attributes}
+
+\item{textNodeName}{name of text nodes, which appear for nodes which have
+both a text content and some attributes}
+
+\item{ignoreAttributes}{Boolean, whether to ignore the attributes}
+
+\item{ignoreNameSpace}{Boolean, whether to ignore the namespaces}
+
+\item{parseNodeValue}{Boolean, whether to parse the node values to numbers
+if possible}
+
+\item{parseAttributeValue}{Boolean, whether to parse the attribute values to
+numbers if possible}
+
+\item{trimValues}{Boolean, whether to trim the values}
 }
 \value{
-
+A JSON string.
 }
 \description{
-Title
+Convert XML to a JSON string.
 }
 \examples{
 xml <- system.file("extdata", "order-schema.xml", package = "xml2")

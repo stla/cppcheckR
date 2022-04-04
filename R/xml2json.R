@@ -1,16 +1,24 @@
-#' Title
+#' @title XML to JSON
+#' @description Convert XML to a JSON string.
 #'
-#' @param xml
-#' @param spaces
-#' @param attributeNamePrefix
-#' @param textNodeName
-#' @param ignoreAttributes
-#' @param ignoreNameSpace
-#' @param parseNodeValue
-#' @param parseAttributeValue
-#' @param trimValues
+#' @param xml either a XML file or some XML given as a character string
+#' @param spaces an integer, the indentation
+#' @param linebreaks Boolean, whether to break the lines in the JSON string
+#'   when there are some linebreaks; this generates an invalid JSON string
+#' @param replacer character vector, the body of the second argument of
+#'   \code{JSON.stringify} (the replacer function), or \code{NULL}
+#' @param attributeNamePrefix prefix for the attributes
+#' @param textNodeName name of text nodes, which appear for nodes which have
+#'   both a text content and some attributes
+#' @param ignoreAttributes Boolean, whether to ignore the attributes
+#' @param ignoreNameSpace Boolean, whether to ignore the namespaces
+#' @param parseNodeValue Boolean, whether to parse the node values to numbers
+#'   if possible
+#' @param parseAttributeValue Boolean, whether to parse the attribute values to
+#'   numbers if possible
+#' @param trimValues Boolean, whether to trim the values
 #'
-#' @return
+#' @return A JSON string.
 #' @export
 #'
 #' @importFrom V8 v8
@@ -33,7 +41,7 @@
 xml2json <- function(
   xml,
   spaces = 2L,
-  linebreaks = TRUE,
+  linebreaks = FALSE,
   replacer = NULL,
   attributeNamePrefix = "@_",
   textNodeName = "#text",
