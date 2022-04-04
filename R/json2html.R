@@ -216,20 +216,26 @@ pandocHTML <- function(div){
   paste0(html, collapse = "\n")
 }
 
-#' Title
+#' @title JSON to HTML
+#' @description Render a formatted JSON string in HTML.
 #'
-#' @param json
-#' @param outfile
-#' @param pandoc
-#' @param style
-#' @param keyColor
-#' @param numberColor
-#' @param stringColor
-#' @param trueColor
-#' @param falseColor
-#' @param nullColor
+#' @param json a JSON string or a path to a JSON file
+#' @param outfile either a path to a html file, or \code{NULL} if you don't
+#'   want to write the output to a file
+#' @param pandoc Boolean, whether to use pandoc
+#' @param style some CSS for the container, only if \code{pandoc=FALSE}
+#' @param keyColor color of the keys, only if \code{pandoc=FALSE}
+#' @param numberColor color of the numbers, only if \code{pandoc=FALSE}
+#' @param stringColor color of the strings, only if \code{pandoc=FALSE}
+#' @param trueColor color of the \code{true} keyword, only
+#'   if \code{pandoc=FALSE}
+#' @param falseColor color of the \code{false} keyword, only
+#'   if \code{pandoc=FALSE}
+#' @param nullColor color of the \code{null} keyword, only
+#'   if \code{pandoc=FALSE}
 #'
-#' @return
+#' @return Nothing if \code{outfile} is not \code{NULL}, otherwise the HtML
+#'   as a character string.
 #' @export
 #'
 #' @importFrom V8 v8

@@ -2,7 +2,7 @@
 % Please edit documentation in R/json2html.R
 \name{json2html}
 \alias{json2html}
-\title{Title}
+\title{JSON to HTML}
 \usage{
 json2html(
   json,
@@ -20,13 +20,36 @@ json2html(
 )
 }
 \arguments{
-\item{nullColor}{}
+\item{json}{a JSON string or a path to a JSON file}
+
+\item{outfile}{either a path to a html file, or \code{NULL} if you don't
+want to write the output to a file}
+
+\item{pandoc}{Boolean, whether to use pandoc}
+
+\item{style}{some CSS for the container, only if \code{pandoc=FALSE}}
+
+\item{keyColor}{color of the keys, only if \code{pandoc=FALSE}}
+
+\item{numberColor}{color of the numbers, only if \code{pandoc=FALSE}}
+
+\item{stringColor}{color of the strings, only if \code{pandoc=FALSE}}
+
+\item{trueColor}{color of the \code{true} keyword, only
+if \code{pandoc=FALSE}}
+
+\item{falseColor}{color of the \code{false} keyword, only
+if \code{pandoc=FALSE}}
+
+\item{nullColor}{color of the \code{null} keyword, only
+if \code{pandoc=FALSE}}
 }
 \value{
-
+Nothing if \code{outfile} is not \code{NULL}, otherwise the HtML
+  as a character string.
 }
 \description{
-Title
+Render a formatted JSON string in HTML.
 }
 \examples{
 library(cppcheckR)
