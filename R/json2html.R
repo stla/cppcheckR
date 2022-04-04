@@ -240,6 +240,7 @@ pandocHTML <- function(div){
 #'
 #' @importFrom V8 v8
 #' @importFrom utils URLencode
+#' @importFrom rmarkdown find_pandoc
 #'
 #' @examples
 #' library(cppcheckR)
@@ -275,16 +276,30 @@ json2html <- function(
     json <- readLines(json)
   }
   if(pandoc){
-    block <- pandocBlock(json)
-    mdfile <- tempfile(fileext = ".md")
-    writeLines(block, mdfile)
-    div <- system2("pandoc", c(mdfile, "-t html"), stdout = TRUE)
-    html <- pandocHTML(div)
-    if(!is.null(outfile)){
-      writeLines(html, outfile)
-      return(invisible(NULL))
+    if(Sys.which("pandoc") == ""){
+      message("'pandoc' is not in the PATH; trying to find it.")
+      p <- find_pandoc()
+      if(!is.null(p$dir)){
+        message(sprintf("'pandoc' %s found in '%s'.", p$version, p$dir))
+        pandoc <- file.path(p$dir, "pandoc")
+      }else{
+        message("'pandoc' not found; switching to the other method.")
+      }
     }else{
-      return(html)
+      pandoc <- "pandoc"
+    }
+    if(is.character(pandoc)){
+      block <- pandocBlock(json)
+      mdfile <- tempfile(fileext = ".md")
+      writeLines(block, mdfile)
+      div <- system2(pandoc, c(mdfile, "-t html"), stdout = TRUE)
+      html <- pandocHTML(div)
+      if(!is.null(outfile)){
+        writeLines(html, outfile)
+        return(invisible(NULL))
+      }else{
+        return(html)
+      }
     }
   }
   jfh <- system.file(
