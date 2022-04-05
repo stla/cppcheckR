@@ -274,7 +274,7 @@ getOptions <- function(path){
 #' @export
 #' @examples
 #' example <- function(file){
-#'   filepath <- system.file("examples", file, package = "cppcheckR")
+#'   filepath <- system.file("cppexamples", file, package = "cppcheckR")
 #'   lines <- readLines(filepath)
 #'   print(cppcheckR(filepath, std = "c++03", def = NA, undef = NA))
 #'   message(file, ":")
