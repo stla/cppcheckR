@@ -119,7 +119,9 @@ HTMLWidgets.widget({
           title.style.textDecoration = "underline";
           title.style.color = "lime";
           title.style.marginTop = "4px";
+
           pre.prepend(title);
+          var pre_outer = pre.outerHTML;
 
           var btn = document.createElement("button");
           btn.innerHTML = "Copy";
@@ -146,11 +148,10 @@ HTMLWidgets.widget({
           btn.onfocus = function () {
             this.style.outline = "none";
           };
-          pre.prepend(btn);
 
           var btnsave = document.createElement("button");
-          btnsave.innerHTML = "Save";
-          btnsave.onclick = function(){
+          btnsave.innerHTML = "JSON";
+          btnsave.onclick = function () {
             var a = document.createElement("a");
             document.body.append(a);
             a.download = "cppcheck.json";
@@ -159,9 +160,10 @@ HTMLWidgets.widget({
             a.click();
             a.remove();
           };
-          btnsave.style.float = "right";
+          //btnsave.style.float = "right";
           btnsave.style.padding = "5px 12px";
-          btnsave.style.marginTop = "5px";
+          btnsave.style.marginTop = "3px";
+          btnsave.style.marginLeft = "2px";
           btnsave.style.borderRadius = "100%";
           btnsave.style.backgroundColor = "darkmagenta";
           btnsave.style.borderWidth = "1.5px";
@@ -179,7 +181,41 @@ HTMLWidgets.widget({
           btnsave.onfocus = function () {
             this.style.outline = "none";
           };
-          pre.appendChild(btnsave);
+
+          var btnhtml = document.createElement("button");
+          btnhtml.innerHTML = "HTML";
+          btnhtml.style.padding = "5px 12px";
+          btnhtml.style.marginTop = "3px";
+          btnhtml.style.marginRight = "2px";
+          btnhtml.style.borderRadius = "100%";
+          btnhtml.style.backgroundColor = "darkmagenta";
+          btnhtml.style.borderWidth = "1.5px";
+          btnhtml.style.borderColor = "yellow";
+          btnhtml.style.backgroundImage =
+            "linear-gradient(200deg, darkmagenta 20%, #e61d8c 90%)";
+          btnhtml.onmouseover = function () {
+            this.style.backgroundImage =
+              "linear-gradient(-20deg, darkmagenta 20%, #e61d8c 90%)";
+          };
+          btnhtml.onmouseout = function () {
+            this.style.backgroundImage =
+              "linear-gradient(200deg, darkmagenta 20%, #e61d8c 90%)";
+          };
+          btnhtml.onfocus = function () {
+            this.style.outline = "none";
+          };
+
+          var fieldset = document.createElement("FIELDSET");
+          fieldset.style.float = "right";
+          var legend = document.createElement("LEGEND");
+          legend.style.fontStyle = "italic";
+          legend.innerHTML = "Save";
+          var btncontainer = document.createElement("DIV");
+          btncontainer.style.display = "flex";
+          btncontainer.appendChild(btnhtml);
+          btncontainer.appendChild(btnsave);
+          fieldset.appendChild(legend);
+          fieldset.appendChild(btncontainer);
 
           el.appendChild(pre);
 
@@ -223,6 +259,38 @@ HTMLWidgets.widget({
             a.appendChild(document.createTextNode(code));
             span.appendChild(a);
           }
+
+          var pre_outerHTML = pre.outerHTML;
+          btnhtml.onclick = function () {
+            var a = document.createElement("a");
+            document.body.append(a);
+            a.download = "cppcheck.html";
+            var html = [
+              "<!DOCTYPE html>",
+              '<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">',
+              "  <head>",
+              '    <meta charset="utf-8" />',
+              '    <meta name="generator" content="json-format-highlight.js" />',
+              "    <meta",
+              '      name="viewport"',
+              '      content="width=device-width, initial-scale=1.0, user-scalable=yes"',
+              "    />",
+              "    <title>Cppcheck</title>",
+              "  </head>",
+              "  <body>",
+              pre_outerHTML,
+              "  </body>",
+              "</html>"
+            ].join("\n");
+            var b64 = btoa(unescape(encodeURIComponent(html)));
+            a.href = "data:text/plain;base64," + b64;
+            a.click();
+            a.remove();
+          };
+
+          pre.prepend(btn);
+
+          pre.appendChild(fieldset);
         }
       },
 
