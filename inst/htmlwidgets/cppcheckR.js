@@ -223,7 +223,7 @@ HTMLWidgets.widget({
           );
           var location = locations.iterateNext();
           while (location) {
-            location.style.borderTop = "2px solid";
+            location.style.borderTop = "2px solid magenta";
             location = locations.iterateNext();
           }
 
@@ -286,6 +286,49 @@ HTMLWidgets.widget({
           pre.prepend(btn);
 
           pre.appendChild(fieldset);
+
+          if (HTMLWidgets.shinyMode) {
+            var emptydiv = document.createElement("DIV");
+            emptydiv.style.height = "10px";
+            pre.appendChild(emptydiv);
+            var filespans = document.evaluate(
+              "//span[text()='\"@_file\":']",
+              document,
+              null,
+              XPathResult.ORDERED_NODE_ITERATOR_TYPE,
+              null
+            );
+            var spn = filespans.iterateNext();
+            var spns = [];
+            while (spn) {
+              spns.push(spn);
+              spn = filespans.iterateNext();
+            }
+            function createAnchor(i) {
+              var nextspan = spns[i].nextElementSibling;
+              var filepath = JSON.parse(nextspan.innerText);
+              nextspan.innerText = "";
+              var a = document.createElement("A");
+              a.style.color = "darkkhaki";
+              a.style.textDecoration = "underline";
+              a.setAttribute("href", "javascript:;");
+              a.appendChild(document.createTextNode(filepath));
+              nextspan.appendChild(a);
+              var linespan = nextspan.nextElementSibling.nextElementSibling;
+              var line = parseInt(linespan.innerText);
+              var colspan = linespan.nextElementSibling.nextElementSibling;
+              var column = parseInt(colspan.innerText);
+              var shinyValue = { file: filepath, line: line, column: column };
+              a.onclick = function () {
+                Shiny.setInputValue("filewithline", shinyValue, {
+                  priority: "event"
+                });
+              };
+            }
+            for (var i = 0; i < results.length; i++) {
+              createAnchor(i);
+            }
+          }
         }
       },
 

@@ -14,6 +14,12 @@ shinyServer(function(input, output, session){
   filePath <- reactiveVal()
   folderPath <- reactiveVal()
 
+  observeEvent(input$filewithline, {
+    fl <- input$filewithline
+    print(fl)
+    rstudioapi::navigateToFile(fl$file, line = fl$line)
+  })
+
   output[["fileOK"]] <- reactive({
     !is.null(filePath())
   })
@@ -73,7 +79,7 @@ shinyServer(function(input, output, session){
 
   output[["cppcheck"]] <- renderCppcheckR({
     req(input[["run"]])
-    path <- ifelse(is.null(filePath()), folderPath(), filePath())
+    path <- isolate(ifelse(is.null(filePath()), folderPath(), filePath()))
     cppcheckR(
       path, std = isolate(input[["std"]]), def = def(), undef = undef(),
       checkConfig = isolate(input[["checkconfig"]])

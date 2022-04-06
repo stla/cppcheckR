@@ -1,5 +1,6 @@
 shinyUI(fluidPage(
   tags$head(
+    tags$link(rel = "stylesheet", href = "shinyCppcheck.css"),
     tags$script(src = "shinyCppcheck.js")
   ),
   use_busy_spinner(
