@@ -330,7 +330,7 @@ json2html <- function(
     "      name=\"viewport\"",
     "      content=\"width=device-width, initial-scale=1.0, user-scalable=yes\"",
     "    />",
-    "    <title></title>",
+    "    <title>Cppcheck</title>",
     "  </head>",
     "  <body>",
     pre,

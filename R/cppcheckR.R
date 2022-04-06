@@ -23,19 +23,6 @@ getRcppDeps <- function(path){
   unique(sub("\\W+Rcpp::depends\\((\\w+)\\)\\W+", "\\1", lines[indices]))
 }
 
-# dep_RcppEigen <- function(path){
-#   fileLines <- readLines(path)
-#   nlines <- length(fileLines)
-#   i <- 0L
-#   test <- TRUE
-#   while(test && i < nlines){
-#     i <- i + 1L
-#     test <- !grepl("RcppEigen", fileLines[i], fixed = TRUE)
-#   }
-#   !test
-# }
-
-
 #' @importFrom xml2 read_xml as_list xml_child xml_length xml_remove xml_contents
 #' @noRd
 cppcheck <- function(
@@ -202,10 +189,6 @@ getOptions <- function(path){
     if(!dir.exists(include)){
       include <- NULL
     }
-    # cppcheck0(
-    #   path = path, Rcpp = Rcpp, RcppDeps = RcppDeps,
-    #   include = include, std = std
-    # )
   }else if(isFile(path)){
     hfiles <- list.files(dirname(path), "\\.h$", full.names = TRUE)
     files <- c(path, hfiles)
@@ -222,9 +205,6 @@ getOptions <- function(path){
       }
       RcppDeps <- unique(RcppDeps)
     }
-    # cppcheck0(
-    #   path = path, Rcpp = Rcpp, RcppDeps = RcppDeps, include = NULL, std = std
-    # )
   }else{ # path is a folder
     files <- list.files(path, "[\\.cpp|\\.h]$", full.names = TRUE)
     Rcpp <- FALSE
@@ -240,9 +220,6 @@ getOptions <- function(path){
       }
       RcppDeps <- unique(RcppDeps)
     }
-    # cppcheck0(
-    #   path = path, Rcpp = Rcpp, RcppDeps = RcppDeps, include = NULL, std = std
-    # )
   }
   list(Rcpp = Rcpp, RcppDeps = RcppDeps, include = include)
 }

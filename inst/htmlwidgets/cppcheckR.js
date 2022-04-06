@@ -5,7 +5,6 @@ function jUnescape(obj) {
   });
   j = j.split('\\\\\\"').join('\\"');
   j = j.split("\\\\\\\\").join("\\\\");
-  console.log(j);
   return JSON.parse(j);
 }
 
@@ -86,7 +85,6 @@ HTMLWidgets.widget({
           document.head.appendChild(style);
 
           var json = parser.parse(decodeURI(x.xmlContent));
-          console.log(json);
           var errors = json.results.errors.error;
           if (errors) {
             for (var i = 0; i < errors.length; i++) {
@@ -95,7 +93,6 @@ HTMLWidgets.widget({
               ].replace(/\\012/g, "\n");
             }
           }
-          console.log(JSON.stringify(json, replacer, 2));
           var pre = document.createElement("PRE");
           var jsonString = jUnescape(JSON.stringify(json, replacer, 2));
           pre.innerHTML = jsonFormatHighlight(jsonString, customColorOptions);
@@ -121,7 +118,6 @@ HTMLWidgets.widget({
           title.style.marginTop = "4px";
 
           pre.prepend(title);
-          var pre_outer = pre.outerHTML;
 
           var btn = document.createElement("button");
           btn.innerHTML = "Copy";
@@ -160,7 +156,6 @@ HTMLWidgets.widget({
             a.click();
             a.remove();
           };
-          //btnsave.style.float = "right";
           btnsave.style.padding = "5px 12px";
           btnsave.style.marginTop = "3px";
           btnsave.style.marginLeft = "2px";

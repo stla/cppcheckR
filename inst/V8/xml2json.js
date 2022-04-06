@@ -1,4 +1,4 @@
-function jUnescape(obj) {
+/*function jUnescape(obj) {
   var j = JSON.stringify(obj);
   ["b", "f", "n", "r", "t", "u"].forEach(function (c) {
     j = j.split("\\\\" + c).join("\\" + c);
@@ -26,7 +26,7 @@ function junescape(j){
   }
   return j0 + junescape(j.slice(1));
 }
-
+*/
 /*function replacer(key, value) {
   if(typeof value === "string"){
     return value.replace(/\\n/g, "\n");
