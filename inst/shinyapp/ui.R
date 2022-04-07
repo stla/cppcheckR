@@ -77,7 +77,7 @@ shinyUI(fluidPage(
         "output.fileOK",
         style = "display: none;",
         aceEditor(
-          "editor", value = "", mode = "c_cpp", theme = "cobalt",
+          "editor0", value = "", mode = "c_cpp", theme = "cobalt",
           height = "40vh"
         )
       ),

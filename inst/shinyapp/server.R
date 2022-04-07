@@ -43,7 +43,19 @@ shinyServer(function(input, output, session){
       pathType("file")
       filePath(tbl[["datapath"]])
       fileContent <- paste0(readLines(tbl[["datapath"]]), collapse = "\n")
-      updateAceEditor(session, "editor", value = fileContent)
+      updateAceEditor(session, "editor0", value = fileContent)
+      insertUI(
+        "#editor0 .ace_scroller",
+        "beforeEnd",
+        actionButton(
+          "btn0", "Save", icon = icon("save"),
+          class = "btn-success",
+          style = "position: absolute; bottom: 2px; right: 2px;",
+          onclick = sprintf(
+            'Shiny.setInputValue("save", {i: 0, name: "%s"}, {priority: "event"});',
+            basename(tbl[["datapath"]]))
+        )
+      )
     }
   }, priority = 1)
 
