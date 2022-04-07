@@ -5,5 +5,6 @@ library(shinyAce)
 library(shinybusy)
 library(shinyWidgets)
 library(rstudioapi)
+library(shinyjqui)
 
 roots <- getVolumes()()

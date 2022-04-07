@@ -45,3 +45,24 @@ legend {
   border: 1px solid #ddd;
   border-bottom-color: transparent;
 }
+
+#toggle {
+  text-transform: none;
+}
+
+pre.shiny-ace: {
+  border: none;
+}
+
+pre.ace_editor {
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.resizable-helper {
+ background-color: pink;
+}
+
+.ui-resizable-handle {
+  border-top: 1px dotted black;
+}

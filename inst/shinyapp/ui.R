@@ -73,7 +73,7 @@ shinyUI(fluidPage(
     ),
     mainPanel(
       style = "display:flex; flex-flow:column; height: 98vh",
-      tags$div(
+      jqui_resizable(tags$div(
         id = "editors",
         conditionalPanel(
           "output.folderOK",
@@ -90,7 +90,7 @@ shinyUI(fluidPage(
             height = "40vh"
           )
         )
-      ),
+      ), options = list(handles = "s", alsoResize = ".ace_editor", helper="resizable-helper")),
       br(),
       cppcheckROutput("cppcheck", height = "100%")
     )
