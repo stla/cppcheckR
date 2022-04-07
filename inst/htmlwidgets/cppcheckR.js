@@ -289,7 +289,7 @@ HTMLWidgets.widget({
 
           if (x.rstudio && HTMLWidgets.shinyMode) {
             var emptydiv = document.createElement("DIV");
-            emptydiv.style.height = "10px";
+            emptydiv.style.height = "5px";
             emptydiv.style.clear = "right";
             pre.appendChild(emptydiv);
             var filespans = document.evaluate(
