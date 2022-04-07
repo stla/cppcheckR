@@ -24,6 +24,7 @@ $(document).ready(function () {
       }
       notstart = true;
     });
+
   Shiny.addCustomMessageHandler("save", function (x) {
     var a = document.createElement("a");
     document.body.append(a);
@@ -33,4 +34,8 @@ $(document).ready(function () {
     a.click();
     a.remove();
   });
+
+  $("#toggle").on("click", function(){
+    $("#editors").toggle("slow");
+  })
 });

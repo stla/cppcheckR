@@ -61,24 +61,34 @@ shinyUI(fluidPage(
             "run", "Check",
             class = "btn-danger btn-block"
           )
+        ),
+        actionBttn(
+          inputId = "toggle",
+          label = "Hide/Show editor",
+          color = "royal",
+          style = "material-flat",
+          block = TRUE
         )
       )
     ),
     mainPanel(
       style = "display:flex; flex-flow:column; height: 98vh",
-      conditionalPanel(
-        "output.folderOK",
-        style = "display: none;",
-        tabsetPanel(
-          id = "tabset"
-        )
-      ),
-      conditionalPanel(
-        "output.fileOK",
-        style = "display: none;",
-        aceEditor(
-          "editor0", value = "", mode = "c_cpp", theme = "cobalt",
-          height = "40vh"
+      tags$div(
+        id = "editors",
+        conditionalPanel(
+          "output.folderOK",
+          style = "display: none;",
+          tabsetPanel(
+            id = "tabset"
+          )
+        ),
+        conditionalPanel(
+          "output.fileOK",
+          style = "display: none;",
+          aceEditor(
+            "editor0", value = "", mode = "c_cpp", theme = "cobalt",
+            height = "40vh"
+          )
         )
       ),
       br(),
