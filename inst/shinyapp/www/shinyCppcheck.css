@@ -1,3 +1,7 @@
+#cppcheck pre {
+  padding: 0 5px;
+}
+
 fieldset {
   display: block;
   margin-inline-start: 2px;

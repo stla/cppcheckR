@@ -59,7 +59,7 @@ shinyUI(fluidPage(
         wellPanel(
           actionButton(
             "run", "Check",
-            class = "btn-danger btn-block", onclick = '$("#cppcheck).empty();'
+            class = "btn-danger btn-block", onclick = '$("#cppcheck").empty();'
           )
         )
       )
