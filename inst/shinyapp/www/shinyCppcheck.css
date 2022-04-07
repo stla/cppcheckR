@@ -1,3 +1,12 @@
+@font-face {
+  font-family: Origin;
+  src: url(./origin-extrabold-webfont.woff);
+}
+
+.origin {
+  font-family: Origin, 'Helvetica Light', sans-serif;
+}
+
 #cppcheck pre {
   padding: 0 5px;
 }
@@ -64,5 +73,5 @@ pre.ace_editor {
 }
 
 .ui-resizable-handle {
-  border-top: 1px dotted black;
+  border-top: 1px dotted orangered;
 }

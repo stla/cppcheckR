@@ -14,7 +14,8 @@ shinyUI(fluidPage(
   ),
   sidebarLayout(
     sidebarPanel(
-      tags$span("Cppcheck", style = "font-size:30px; font-style: italic;"),
+      tags$span("Cppcheck", style = "font-size:30px;", class = "origin"),
+      br(), br(),
       splitLayout(
         shinyFilesButton(
           "file",
@@ -67,7 +68,8 @@ shinyUI(fluidPage(
           label = "Hide/Show editor",
           color = "royal",
           style = "material-flat",
-          block = TRUE
+          block = TRUE,
+          size = "sm"
         )
       )
     ),
@@ -90,7 +92,11 @@ shinyUI(fluidPage(
             height = "40vh"
           )
         )
-      ), options = list(handles = "s", alsoResize = ".ace_editor", helper="resizable-helper")),
+      ), options = list(
+        handles = "s",
+        alsoResize = ".ace_editor",
+        helper="resizable-helper"
+      )),
       br(),
       cppcheckROutput("cppcheck", height = "100%")
     )
