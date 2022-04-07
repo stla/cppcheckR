@@ -29,3 +29,19 @@ legend {
   margin-bottom: unset;
   color: inherit;
 }
+
+.nav > li > a {
+  padding: 2px 3px;
+  background-color: darkcyan;
+  color: white;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+  background-color: navy;
+  color: white;
+  cursor: default;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}

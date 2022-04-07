@@ -1,25 +1,36 @@
-$(document).ready(function(){
+$(document).ready(function () {
   var notstart = false;
-  $("#cppcheck").on("shiny:recalculating", function(){
-    if(notstart){
-      $(".shinybusy").addClass("shinybusy-busy");
-      $(".shinybusy").removeClass("shinybusy-ready");
-      $("#file").prop("disabled", true);
-      $("#folder").prop("disabled", true);
-      $("#btndef").prop("disabled", true);
-      $("#btnundef").prop("disabled", true);
-      $("#run").prop("disabled", true).text("Checking...");
-    }
-  }).on("shiny:recalculated", function(){
-    if(notstart){
-      $(".shinybusy").removeClass("shinybusy-busy");
-      $(".shinybusy").addClass("shinybusy-ready");
-      $("#file").prop("disabled", false);
-      $("#folder").prop("disabled", false);
-      $("#btndef").prop("disabled", false);
-      $("#btnundef").prop("disabled", false);
-      $("#run").prop("disabled", false).text("Check");
-    }
-    notstart = true;
+  $("#cppcheck")
+    .on("shiny:recalculating", function () {
+      if (notstart) {
+        $(".shinybusy").addClass("shinybusy-busy");
+        $(".shinybusy").removeClass("shinybusy-ready");
+        $("#file").prop("disabled", true);
+        $("#folder").prop("disabled", true);
+        $("#btndef").prop("disabled", true);
+        $("#btnundef").prop("disabled", true);
+        $("#run").prop("disabled", true).text("Checking...");
+      }
+    })
+    .on("shiny:recalculated", function () {
+      if (notstart) {
+        $(".shinybusy").removeClass("shinybusy-busy");
+        $(".shinybusy").addClass("shinybusy-ready");
+        $("#file").prop("disabled", false);
+        $("#folder").prop("disabled", false);
+        $("#btndef").prop("disabled", false);
+        $("#btnundef").prop("disabled", false);
+        $("#run").prop("disabled", false).text("Check");
+      }
+      notstart = true;
+    });
+  Shiny.addCustomMessageHandler("save", function (x) {
+    var a = document.createElement("a");
+    document.body.append(a);
+    a.download = x.name;
+    var b64 = btoa(unescape(encodeURIComponent(x.content)));
+    a.href = "data:text/plain;base64," + b64;
+    a.click();
+    a.remove();
   });
-})
+});

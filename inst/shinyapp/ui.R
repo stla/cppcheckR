@@ -30,8 +30,8 @@ shinyUI(fluidPage(
           label = "Select a folder",
           title = "Choose a folder containing C or C++ files",
           buttonType = "primary",
-          class = "btn-block",
-          onclick = "$('#cppcheck').css('height', '90vh');"
+          class = "btn-block"
+          # onclick = "$('#cppcheck').css('height', '90vh');"
         )
       ),
       br(), br(), br(),
@@ -66,12 +66,21 @@ shinyUI(fluidPage(
     ),
     mainPanel(
       conditionalPanel(
+        "output.folderOK",
+        style = "display: none;",
+        tabsetPanel(
+          id = "tabset"
+        )
+      ),
+      conditionalPanel(
         "output.fileOK",
         style = "display: none;",
-        aceEditor(
-          "editor", value = "", mode = "c_cpp", theme = "cobalt",
-          height = "45vh"
-        )
+        tabsetPanel(
+          tabPanel(title = "xxx",
+                   aceEditor(
+                     "editor", value = "", mode = "c_cpp", theme = "cobalt",
+                     height = "45vh"
+                   )))
       ),
       br(),
       cppcheckROutput("cppcheck")
