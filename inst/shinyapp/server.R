@@ -82,7 +82,7 @@ shinyServer(function(input, output, session){
           title = basename(f),
           aceEditor(
             paste0("editor", i), value = fileContent,
-            mode = "c_cpp", theme = "cobalt", height = "45vh"
+            mode = "c_cpp", theme = "cobalt", height = "40vh"
           )
         ),
         select = i == 1L

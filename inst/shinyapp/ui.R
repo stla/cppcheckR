@@ -65,6 +65,7 @@ shinyUI(fluidPage(
       )
     ),
     mainPanel(
+      style = "display:flex; flex-flow:column; height: 98vh",
       conditionalPanel(
         "output.folderOK",
         style = "display: none;",
@@ -77,11 +78,11 @@ shinyUI(fluidPage(
         style = "display: none;",
         aceEditor(
           "editor", value = "", mode = "c_cpp", theme = "cobalt",
-          height = "45vh"
+          height = "40vh"
         )
       ),
       br(),
-      cppcheckROutput("cppcheck")
+      cppcheckROutput("cppcheck", height = "100%")
     )
   )
 ))
