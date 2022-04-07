@@ -45,7 +45,7 @@ shinyServer(function(input, output, session){
       fileContent <- paste0(readLines(tbl[["datapath"]]), collapse = "\n")
       updateAceEditor(session, "editor", value = fileContent)
     }
-  })
+  }, priority = 1)
 
   observeEvent(input[["folder"]], {
     path <- parseDirPath(roots, input[["folder"]])
@@ -57,7 +57,19 @@ shinyServer(function(input, output, session){
         path, pattern = "[\\.cpp|\\.c|\\.c\\+\\+]$", full.names = TRUE
       ))
     }
-  })
+  }, priority = 1)
+
+  observeEvent(list(input[["folder"]], input[["file"]]), {
+    for(f in files()){
+      removeTab("tabset", basename(f))
+    }
+    def(character(0L))
+    undef(character(0L))
+    filePath(NULL)
+    folderPath(NULL)
+    files(NULL)
+    pathType(NULL)
+  }, priority = 10)
 
   observeEvent(files(), {
     i <- 0L
@@ -90,10 +102,10 @@ shinyServer(function(input, output, session){
     }
   })
 
-  observeEvent(input$save, {
-    filename <- input$save$name
-    editor <- paste0("editor", input$save$i)
-    session$sendCustomMessage(
+  observeEvent(input[["save"]], {
+    filename <- input[["save"]][["name"]]
+    editor <- paste0("editor", input[["save"]][["i"]])
+    session[["sendCustomMessage"]](
       "save", list(name = filename, content = input[[editor]])
     )
   })
@@ -132,12 +144,9 @@ shinyServer(function(input, output, session){
   output[["cppcheck"]] <- renderCppcheckR({
     req(input[["run"]])
     path <- isolate(ifelse(is.null(filePath()), folderPath(), filePath()))
-    on.exit({
-      def(character(0L))
-      undef(character(0L))
-    })
     cppcheckR(
-      path, std = isolate(input[["std"]]), def = def(), undef = undef(),
+      path, std = isolate(input[["std"]]),
+      def = isolate(def()), undef = isolate(undef()),
       checkConfig = isolate(input[["checkconfig"]])
     )
   })
