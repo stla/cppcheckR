@@ -247,6 +247,7 @@ getOptions <- function(path){
 #'
 #' @importFrom htmlwidgets createWidget
 #' @importFrom utils URLencode
+#' @importFrom rstudioapi isAvailable
 #'
 #' @export
 #' @examples
@@ -310,7 +311,8 @@ cppcheckR <- function(
   # forward options using x
   x = list(
     title = title,
-    xmlContent = URLencode(cppcheckResults)
+    xmlContent = URLencode(cppcheckResults),
+    rstudio = isAvailable()
   )
 
   # create widget

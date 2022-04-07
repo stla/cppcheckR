@@ -14,10 +14,11 @@ shinyServer(function(input, output, session){
   filePath <- reactiveVal()
   folderPath <- reactiveVal()
 
-  observeEvent(input$filewithline, {
-    fl <- input$filewithline
-    print(fl)
-    rstudioapi::navigateToFile(fl$file, line = fl$line)
+  observeEvent(input[["filewithline"]], {
+    flc <- input[["filewithline"]]
+    navigateToFile(
+      flc[["file"]], line = flc[["line"]], column = flc[["column"]]
+    )
   })
 
   output[["fileOK"]] <- reactive({
@@ -33,6 +34,7 @@ shinyServer(function(input, output, session){
   observeEvent(input[["file"]], {
     tbl <- parseFilePaths(roots, input[["file"]])
     if(nrow(tbl) != 0L){
+      folderPath(NULL)
       filePath(tbl[["datapath"]])
       fileContent <- paste0(readLines(tbl[["datapath"]]), collapse = "\n")
       updateAceEditor(session, "editor", value = fileContent)
@@ -42,6 +44,7 @@ shinyServer(function(input, output, session){
   observeEvent(input[["folder"]], {
     path <- parseDirPath(roots, input[["folder"]])
     if(length(path) != 0L){
+      filePath(NULL)
       folderPath(path)
     }
   })
@@ -80,6 +83,10 @@ shinyServer(function(input, output, session){
   output[["cppcheck"]] <- renderCppcheckR({
     req(input[["run"]])
     path <- isolate(ifelse(is.null(filePath()), folderPath(), filePath()))
+    on.exit({
+      def(character(0L))
+      undef(character(0L))
+    })
     cppcheckR(
       path, std = isolate(input[["std"]]), def = def(), undef = undef(),
       checkConfig = isolate(input[["checkconfig"]])

@@ -287,7 +287,7 @@ HTMLWidgets.widget({
 
           pre.appendChild(fieldset);
 
-          if (HTMLWidgets.shinyMode) {
+          if (x.rstudio && HTMLWidgets.shinyMode) {
             var emptydiv = document.createElement("DIV");
             emptydiv.style.height = "10px";
             pre.appendChild(emptydiv);
@@ -325,7 +325,7 @@ HTMLWidgets.widget({
                 });
               };
             }
-            for (var i = 0; i < results.length; i++) {
+            for (var i = 0; i < spns.length; i++) {
               createAnchor(i);
             }
           }
