@@ -45,7 +45,10 @@ shinyUI(fluidPage(
             c("c89", "c99", "c11", "c++03", "c++11", "c++14", "c++17", "c++20")
         ),
         br(),
-        awesomeCheckbox("checkconfig", "Check config"),
+        prettyCheckbox(
+          "checkconfig", tags$em("Check config"),
+          status = "info", shape = "round", inline = TRUE
+        ),
         br(),
         h4("Define/undefine a symbol:"),
         actionGroupButtons(
@@ -58,9 +61,18 @@ shinyUI(fluidPage(
         ),
         br(),
         wellPanel(
-          actionButton(
-            "run", "Check",
-            class = "btn-danger btn-block"
+          fluidRow(
+            column(
+              2,
+              tags$img(src = "cppcheck-gui.png", style = "width: 140%")
+            ),
+            column(
+              10,
+              actionButton(
+                "run", "Check",
+                class = "btn-danger btn-block"
+              )
+            )
           )
         ),
         actionBttn(

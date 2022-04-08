@@ -57,6 +57,7 @@ legend {
 
 #toggle {
   text-transform: none;
+  border-radius: 4px;
 }
 
 pre.shiny-ace: {
@@ -66,12 +67,17 @@ pre.shiny-ace: {
 pre.ace_editor {
   min-width: 100%;
   max-width: 100%;
+  border: none;
 }
 
 .resizable-helper {
- background-color: pink;
+  background-color: pink;
 }
 
 .ui-resizable-handle {
   border-top: 1px dotted orangered;
+}
+
+.pretty .state label:before {
+  background-color: lightpink;
 }
