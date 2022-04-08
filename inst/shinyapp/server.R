@@ -49,7 +49,7 @@ shinyServer(function(input, output, session){
   outputOptions(output, "fileOK", suspendWhenHidden = FALSE)
 
   output[["folderOK"]] <- reactive({
-    !is.null(folderPath())
+    !is.null(folderPath()) && length(files()) != 0L
   })
   outputOptions(output, "folderOK", suspendWhenHidden = FALSE)
 
@@ -82,9 +82,18 @@ shinyServer(function(input, output, session){
       filePath(NULL)
       pathType("folder")
       folderPath(path)
-      files(list.files(
+      cfiles <- list.files(
         path, pattern = "[\\.cpp|\\.c|\\.c\\+\\+]$", full.names = TRUE
-      ))
+      )
+      if(length(cfiles) == 0L){
+        sendSweetAlert(
+          title = "Invalid folder",
+          text = "There's no C/C++ file in this folder.",
+          type = "error"
+        )
+      }else{
+        files(cfiles)
+      }
     }
   }, priority = 1)
 
