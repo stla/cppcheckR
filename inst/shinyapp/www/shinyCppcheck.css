@@ -5,6 +5,7 @@
 
 .origin {
   font-family: Origin, 'Helvetica Light', sans-serif;
+  letter-spacing: 2px;
 }
 
 #cppcheck pre {
