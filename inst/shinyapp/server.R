@@ -24,6 +24,13 @@ shinyServer(function(input, output, session){
     if(pathType() == "folder"){
       showTab("tabset", basename(flc[["file"]]), select = TRUE)
     }
+    session$sendCustomMessage(
+      "goto", list(
+        line = flc[["line"]],
+        column = flc[["column"]],
+        folder = pathType() == "folder"
+      )
+    )
   })
 
   output[["fileOK"]] <- reactive({

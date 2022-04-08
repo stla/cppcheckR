@@ -35,7 +35,19 @@ $(document).ready(function () {
     a.remove();
   });
 
-  $("#toggle").on("click", function(){
+  $("#toggle").on("click", function () {
     $("#editors").toggle("slow");
-  })
+  });
+
+  Shiny.addCustomMessageHandler("goto", function (x) {
+    var i = 0;
+    setTimeout(function () {
+      if (x.folder) {
+        i = $("#tabset li.active").index() + 1;
+      }
+      var editor = ace.edit("editor" + i);
+      editor.env.editor.gotoLine(x.line, x.column);
+      editor.focus();
+    }, 10);
+  });
 });
