@@ -70,10 +70,6 @@ pre.ace_editor {
   border: none;
 }
 
-.resizable-helper {
-  background-color: pink;
-}
-
 .ui-resizable-handle {
   border-top: 1px dotted orangered;
 }

@@ -106,8 +106,7 @@ shinyUI(fluidPage(
         )
       ), options = list(
         handles = "s",
-        alsoResize = ".ace_editor",
-        helper="resizable-helper"
+        alsoResize = ".ace_editor"
       )),
       br(),
       cppcheckROutput("cppcheck", height = "100%")

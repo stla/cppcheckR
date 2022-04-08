@@ -1,6 +1,6 @@
 Package: cppcheckR
 Type: Package
-Title: Check 'C' and 'C++' Files with a R Command or a 'RStudio' Addin
+Title: Check 'C' and 'C++' Files with a R Command, a 'RStudio' Addin, or a 'Shiny' application.
 Version: 0.1.0.9000
 Authors@R: c(
     person(
@@ -16,7 +16,7 @@ Authors@R: c(
       role = "cph", comment = "'json-format-highlight' library"
     )
   )
-Description: Allow to run 'Cppcheck' on C/C++ files with a R command or a 'RStudio' addin. The report appears in the RStudio viewer pane as a formatted HTML file.
+Description: Allow to run 'Cppcheck' on C/C++ files with a R command or a 'RStudio' addin. The report appears in the RStudio viewer pane as a formatted HTML file. It is also possible to get this report with a 'Shiny' application.
 License: GPL-3
 Encoding: UTF-8
 Imports: htmlwidgets, rstudioapi, xml2, pkgload, utils, shiny, V8, rmarkdown
