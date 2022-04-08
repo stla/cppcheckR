@@ -79,8 +79,13 @@ pre.ace_editor {
   background-color: lightpink;
 }
 
+.pretty input:checked~.state.p-info label:after {
+  background-color: firebrick !important;
+}
+
 .selectize-dropdown .optgroup>.optgroup-header {
   font-size: 15px;
   font-weight: bold;
+  font-style: italic;
   color: black;
 }
