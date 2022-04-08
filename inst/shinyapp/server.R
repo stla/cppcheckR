@@ -33,6 +33,16 @@ shinyServer(function(input, output, session){
     )
   })
 
+  observeEvent(input[["showtoast"]], {
+    show_toast(
+      title = "Do you know?",
+      text = "You can resize the editor.",
+      type = "info",
+      timer = 5000,
+      position = "bottom-start"
+    )
+  })
+
   output[["fileOK"]] <- reactive({
     !is.null(filePath())
   })

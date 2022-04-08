@@ -37,6 +37,8 @@ $(document).ready(function () {
 
   $("#toggle").on("click", function () {
     $("#editors").toggle("slow");
+  }).one("mouseenter", function(){
+    Shiny.setInputValue("showtoast", true);
   });
 
   Shiny.addCustomMessageHandler("goto", function (x) {
