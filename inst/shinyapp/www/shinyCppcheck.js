@@ -52,4 +52,11 @@ $(document).ready(function () {
       editor.focus();
     }, 10);
   });
+
+  $("[data-toggle=tooltip]").tooltip().on("hidden.bs.tooltip", function() {
+    var $this = $(this);
+    setTimeout(function() {
+      $this.tooltip("destroy");
+    }, 10000);
+  });
 });

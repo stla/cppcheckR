@@ -89,3 +89,29 @@ pre.ace_editor {
   font-style: italic;
   color: black;
 }
+
+/* bootstrap tooltips */
+.tooltip {
+  pointer-events: none;
+}
+.tooltip > .tooltip-inner {
+  pointer-events: none;
+  background-color: #73AD21;
+  color: #FFFFFF;
+  padding: 5px;
+  font-size: 15px;
+  width: 200%;
+  max-width: 200%;
+}
+.tooltip.bottom > .tooltip-arrow {
+  border-bottom-color: #73AD21;
+}
+.tooltip.left > .tooltip-arrow {
+  border-left-color: #73AD21;
+}
+.tooltip.top > .tooltip-arrow {
+  border-top-color: #73AD21;
+}
+.tooltip.right > .tooltip-arrow {
+  border-right-color: #73AD21;
+}

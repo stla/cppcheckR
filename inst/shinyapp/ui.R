@@ -51,7 +51,15 @@ shinyUI(fluidPage(
         ),
         br(),
         prettyCheckbox(
-          "checkconfig", tags$em("Check config"),
+          "checkconfig",
+          tags$em(
+            "Check config",
+            `data-toggle` = "tooltip",
+            `data-placement` = "right",
+            title = paste0(
+              "This option tells you which header files are missing."
+            )
+          ),
           status = "info", shape = "round", inline = TRUE
         ),
         br(),
