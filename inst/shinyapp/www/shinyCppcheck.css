@@ -78,3 +78,9 @@ pre.ace_editor {
 .pretty .state label:before {
   background-color: lightpink;
 }
+
+.selectize-dropdown .optgroup>.optgroup-header {
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+}

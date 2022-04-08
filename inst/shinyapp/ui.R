@@ -39,10 +39,15 @@ shinyUI(fluidPage(
       conditionalPanel(
         "output.fileOK || output.folderOK",
         style = "display: none;",
-        selectInput(
+        selectizeInput(
           "std", "Select the standard",
-          choices =
-            c("c89", "c99", "c11", "c++03", "c++11", "c++14", "c++17", "c++20")
+          choices = list(
+            "C" = list("c89", "c99", "c11"),
+            "C++" = list("c++03", "c++11", "c++14", "c++17", "c++20")
+          ),
+          options = list(
+            plugins = list("optgroup_columns")
+          )
         ),
         br(),
         prettyCheckbox(
