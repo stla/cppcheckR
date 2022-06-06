@@ -1,7 +1,7 @@
 # cppcheckR
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/stla/cppcheckR/workflows/R-CMD-check/badge.svg)](https://github.com/stla/cppcheckR/actions)
+[![R-CMD-check](https://github.com/stla/cppcheckR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/cppcheckR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 A R package to run [Cppcheck](https://cppcheck.sourceforge.io/) on C/C++ files 
