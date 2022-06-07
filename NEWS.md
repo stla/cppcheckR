@@ -1,3 +1,3 @@
-# cppcheckR 0.1.0.9000
+# cppcheckR 1.0.0
 
 First release.
