@@ -214,6 +214,19 @@ HTMLWidgets.widget({
 
           el.appendChild(pre);
 
+          var spans_id = document.evaluate(
+            "//span[text()='\"@_id\":']",
+            document,
+            null,
+            XPathResult.ORDERED_NODE_ITERATOR_TYPE,
+            null
+          );
+          var span_id = spans_id.iterateNext();
+          while (span_id) {
+            span_id.style = "color: gold;";
+            span_id = spans_id.iterateNext();
+          }
+
           var locations = document.evaluate(
             "//span[text()='\"location\":']",
             document,
