@@ -90,7 +90,7 @@ cppcheck <- function(
   args <- c(args, path)
   xmlFile <- tempfile(fileext = ".xml")
   CPPCHECK <- suppressWarnings(
-    system2("cppcheck", args, stdout = "", stderr = xmlFile)
+    system2("cppcheck", args, stdout = FALSE, stderr = xmlFile)
   )
   if(!is.null(attr(CPPCHECK, "status"))){
     stop(CPPCHECK)
@@ -256,6 +256,8 @@ cppcheck_prompt_undef <- function(){
 #'   option \code{--check-config}; this tells you which header files are missing
 #' @param height height in pixels (defaults to automatic sizing)
 #' @param elementId an id for the widget, this is usually useless
+#'
+#' @return A \code{htmlwidget} object.
 #'
 #' @importFrom htmlwidgets createWidget
 #' @importFrom utils URLencode

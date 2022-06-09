@@ -37,6 +37,9 @@ option \code{--check-config}; this tells you which header files are missing}
 
 \item{elementId}{an id for the widget, this is usually useless}
 }
+\value{
+A \code{htmlwidget} object.
+}
 \description{
 HTML widget which runs \strong{Cppcheck}.
 }

@@ -6,3 +6,4 @@
 ^inst/images$
 ^inst/trash$
 ^cran-comments\.md$
+^CRAN-SUBMISSION$

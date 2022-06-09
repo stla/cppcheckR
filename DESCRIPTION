@@ -1,27 +1,39 @@
-Package: cppcheckR
 Type: Package
-Title: Check 'C' and 'C++' Files with a R Command, a 'RStudio' Addin, or a 'Shiny' Application
+Package: cppcheckR
+Title: Check 'C' and 'C++' Files using 'Cppcheck'
 Version: 1.0.0
 Authors@R: c(
-    person(
-      "Stéphane", "Laurent", 
-      role = c("aut", "cre"), email = "laurent_step@outlook.fr"
-    ),
-    person(
-      "Amit", "Gupta",
-      role = "cph", comment = "'fast-xml-parser' library"
-    ),
-    person(
-      "luyilin",
-      role = "cph", comment = "'json-format-highlight' library"
-    )
+    person("Stéphane", "Laurent", , "laurent_step@outlook.fr", 
+           role = c("aut", "cre")),
+    person("Amit", "Gupta", role = "cph",
+           comment = "'fast-xml-parser' library"),
+    person("luyilin", role = "cph",
+           comment = "'json-format-highlight' library")
   )
-Description: Allow to run 'Cppcheck' (<https://cppcheck.sourceforge.io/>) on C/C++ files with a R command or a 'RStudio' addin. The report appears in the RStudio viewer pane as a formatted HTML file. It is also possible to get this report with a 'Shiny' application.
+Description: Allow to run 'Cppcheck' (<https://cppcheck.sourceforge.io/>)
+    on 'C' and 'C++' files with a 'R' command or a 'RStudio' addin. The report
+    appears in the 'RStudio' viewer pane as a formatted 'HTML' file. It is
+    also possible to get this report with a 'shiny' application. 'Cppcheck' 
+    can spot many error types and it can also give some recommendations on the 
+    code.
 License: GPL-3
-Encoding: UTF-8
-Imports: htmlwidgets, rstudioapi, xml2, utils, shiny, V8, rmarkdown
-Suggests: shinyFiles, shinyAce, shinybusy, shinyWidgets, shinyjqui, htmltools
-SystemRequirements: cppcheck
 URL: https://github.com/stla/cppcheckR
 BugReports: https://github.com/stla/cppcheckR/issues
+Imports: 
+    htmlwidgets,
+    rmarkdown,
+    rstudioapi,
+    shiny,
+    utils,
+    V8,
+    xml2
+Suggests: 
+    htmltools,
+    shinyAce,
+    shinybusy,
+    shinyFiles,
+    shinyjqui,
+    shinyWidgets
+Encoding: UTF-8
 RoxygenNote: 7.2.0
+SystemRequirements: cppcheck
